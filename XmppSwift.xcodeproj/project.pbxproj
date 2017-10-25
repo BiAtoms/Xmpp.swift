@@ -7,25 +7,60 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25B841BA09872053272DA93C /* Pods_XmppSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775EEA6ED6844AECC0535DF3 /* Pods_XmppSwift.framework */; };
+		50C5D40E97A76A571A88071B /* Pods_XmppSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BBEE104DC5B89D96E4FD38 /* Pods_XmppSwift.framework */; };
+		9D1F63EC1F9BB944009C0983 /* XmppSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DBC48541F9B877D0074093C /* XmppSwift.framework */; };
+		9D1F63F01F9DD7F8009C0983 /* SASLAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63EF1F9DD7F8009C0983 /* SASLAuthenticator.swift */; };
+		9D1F63F21F9DDDFD009C0983 /* PlainAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F11F9DDDFD009C0983 /* PlainAuthenticator.swift */; };
+		9D1F63F41F9DDE36009C0983 /* AnonymusAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F31F9DDE36009C0983 /* AnonymusAuthenticator.swift */; };
+		9D1F63F61F9E52EC009C0983 /* XmppReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F51F9E52EC009C0983 /* XmppReader.swift */; };
+		9D1F63F81F9EB389009C0983 /* XmppInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F71F9EB389009C0983 /* XmppInputStream.swift */; };
 		9DBC48591F9B877D0074093C /* XmppSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DBC48571F9B877D0074093C /* XmppSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DBC48661F9B8C070074093C /* XmppSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC48651F9B8C070074093C /* XmppSwiftTests.swift */; };
-		F68D31B5185151043B0504A5 /* Pods_XmppSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371040C9726CF85116C2BFF6 /* Pods_XmppSwiftTests.framework */; };
+		9DBC486F1F9BABC80074093C /* XmppStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC486E1F9BABC80074093C /* XmppStream.swift */; };
+		9DBC48711F9BADCB0074093C /* JID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC48701F9BADCB0074093C /* JID.swift */; };
+		9DC07B0E1FA1145F00A59542 /* XmppMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */; };
+		9DC07B101FA1149C00A59542 /* XmppIQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */; };
+		9DC07B121FA114F600A59542 /* XmppPresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B111FA114F600A59542 /* XmppPresence.swift */; };
+		9DC07B141FA118A200A59542 /* XmppWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B131FA118A200A59542 /* XmppWriter.swift */; };
+		9DC07B161FA12EE600A59542 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B151FA12EE600A59542 /* Helpers.swift */; };
+		BCA2BA25AFE59F5775718929 /* Pods_XmppSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 676D634A573D008BD4FF81B8 /* Pods_XmppSwiftTests.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9D1F63EA1F9BB90F009C0983 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9DBC484B1F9B877D0074093C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9DBC48531F9B877D0074093C;
+			remoteInfo = XmppSwift;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		371040C9726CF85116C2BFF6 /* Pods_XmppSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmppSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		433E0D61F2378EF0BA01F6FD /* Pods-XmppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwift/Pods-XmppSwift.debug.xcconfig"; sourceTree = "<group>"; };
-		775EEA6ED6844AECC0535DF3 /* Pods_XmppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D568569AA758BD36B240812 /* Pods-XmppSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwiftTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwiftTests/Pods-XmppSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1389E326DF2AD0F6C323528E /* Pods-XmppSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwiftTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwiftTests/Pods-XmppSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
+		3142A38BD46231B101FC3372 /* Pods-XmppSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwift/Pods-XmppSwift.release.xcconfig"; sourceTree = "<group>"; };
+		676D634A573D008BD4FF81B8 /* Pods_XmppSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmppSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D1F63EF1F9DD7F8009C0983 /* SASLAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SASLAuthenticator.swift; sourceTree = "<group>"; };
+		9D1F63F11F9DDDFD009C0983 /* PlainAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainAuthenticator.swift; sourceTree = "<group>"; };
+		9D1F63F31F9DDE36009C0983 /* AnonymusAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymusAuthenticator.swift; sourceTree = "<group>"; };
+		9D1F63F51F9E52EC009C0983 /* XmppReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppReader.swift; sourceTree = "<group>"; };
+		9D1F63F71F9EB389009C0983 /* XmppInputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppInputStream.swift; sourceTree = "<group>"; };
 		9DBC48541F9B877D0074093C /* XmppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XmppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DBC48571F9B877D0074093C /* XmppSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XmppSwift.h; sourceTree = "<group>"; };
 		9DBC48581F9B877D0074093C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9DBC48631F9B8C070074093C /* XmppSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XmppSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DBC48651F9B8C070074093C /* XmppSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppSwiftTests.swift; sourceTree = "<group>"; };
 		9DBC48671F9B8C070074093C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B762C0FF99AB7EB46A0AB436 /* Pods-XmppSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwiftTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwiftTests/Pods-XmppSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
-		BE52514797CF613B3DEA37ED /* Pods-XmppSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwift/Pods-XmppSwift.release.xcconfig"; sourceTree = "<group>"; };
-		C2C10F7FFB7A2DB6639767F6 /* Pods-XmppSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwiftTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwiftTests/Pods-XmppSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9DBC486E1F9BABC80074093C /* XmppStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppStream.swift; sourceTree = "<group>"; };
+		9DBC48701F9BADCB0074093C /* JID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JID.swift; sourceTree = "<group>"; };
+		9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppMessage.swift; sourceTree = "<group>"; };
+		9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppIQ.swift; sourceTree = "<group>"; };
+		9DC07B111FA114F600A59542 /* XmppPresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppPresence.swift; sourceTree = "<group>"; };
+		9DC07B131FA118A200A59542 /* XmppWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppWriter.swift; sourceTree = "<group>"; };
+		9DC07B151FA12EE600A59542 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		B0BBEE104DC5B89D96E4FD38 /* Pods_XmppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7594283A1C33602784DF0E9 /* Pods-XmppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwift/Pods-XmppSwift.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,7 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25B841BA09872053272DA93C /* Pods_XmppSwift.framework in Frameworks */,
+				50C5D40E97A76A571A88071B /* Pods_XmppSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,30 +76,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F68D31B5185151043B0504A5 /* Pods_XmppSwiftTests.framework in Frameworks */,
+				9D1F63EC1F9BB944009C0983 /* XmppSwift.framework in Frameworks */,
+				BCA2BA25AFE59F5775718929 /* Pods_XmppSwiftTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7CEA60996A1E72D794CBBF41 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				775EEA6ED6844AECC0535DF3 /* Pods_XmppSwift.framework */,
-				371040C9726CF85116C2BFF6 /* Pods_XmppSwiftTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		9DBC484A1F9B877D0074093C = {
 			isa = PBXGroup;
 			children = (
 				9DBC48561F9B877D0074093C /* Sources */,
 				9DBC48641F9B8C070074093C /* Tests */,
 				9DBC48551F9B877D0074093C /* Products */,
-				DC73AC1763945B0764990849 /* Pods */,
-				7CEA60996A1E72D794CBBF41 /* Frameworks */,
+				F410F0B3E9CBCC5F042EE788 /* Pods */,
+				D44F072205DDB0FD7E35FEC7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -82,6 +109,18 @@
 			children = (
 				9DBC48571F9B877D0074093C /* XmppSwift.h */,
 				9DBC48581F9B877D0074093C /* Info.plist */,
+				9DBC486E1F9BABC80074093C /* XmppStream.swift */,
+				9D1F63F51F9E52EC009C0983 /* XmppReader.swift */,
+				9DC07B131FA118A200A59542 /* XmppWriter.swift */,
+				9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */,
+				9DC07B111FA114F600A59542 /* XmppPresence.swift */,
+				9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */,
+				9D1F63F71F9EB389009C0983 /* XmppInputStream.swift */,
+				9D1F63EF1F9DD7F8009C0983 /* SASLAuthenticator.swift */,
+				9D1F63F11F9DDDFD009C0983 /* PlainAuthenticator.swift */,
+				9D1F63F31F9DDE36009C0983 /* AnonymusAuthenticator.swift */,
+				9DBC48701F9BADCB0074093C /* JID.swift */,
+				9DC07B151FA12EE600A59542 /* Helpers.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -103,13 +142,22 @@
 			path = XmppSwiftTests;
 			sourceTree = "<group>";
 		};
-		DC73AC1763945B0764990849 /* Pods */ = {
+		D44F072205DDB0FD7E35FEC7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				433E0D61F2378EF0BA01F6FD /* Pods-XmppSwift.debug.xcconfig */,
-				BE52514797CF613B3DEA37ED /* Pods-XmppSwift.release.xcconfig */,
-				C2C10F7FFB7A2DB6639767F6 /* Pods-XmppSwiftTests.debug.xcconfig */,
-				B762C0FF99AB7EB46A0AB436 /* Pods-XmppSwiftTests.release.xcconfig */,
+				B0BBEE104DC5B89D96E4FD38 /* Pods_XmppSwift.framework */,
+				676D634A573D008BD4FF81B8 /* Pods_XmppSwiftTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F410F0B3E9CBCC5F042EE788 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C7594283A1C33602784DF0E9 /* Pods-XmppSwift.debug.xcconfig */,
+				3142A38BD46231B101FC3372 /* Pods-XmppSwift.release.xcconfig */,
+				0D568569AA758BD36B240812 /* Pods-XmppSwiftTests.debug.xcconfig */,
+				1389E326DF2AD0F6C323528E /* Pods-XmppSwiftTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -132,12 +180,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9DBC485C1F9B877D0074093C /* Build configuration list for PBXNativeTarget "XmppSwift" */;
 			buildPhases = (
-				A2129B92088E0046392454A5 /* [CP] Check Pods Manifest.lock */,
+				280AF25209185D6BD76472C8 /* [CP] Check Pods Manifest.lock */,
 				9DBC484F1F9B877D0074093C /* Sources */,
 				9DBC48501F9B877D0074093C /* Frameworks */,
 				9DBC48511F9B877D0074093C /* Headers */,
 				9DBC48521F9B877D0074093C /* Resources */,
-				FF7CF109CC7367028B94AB80 /* [CP] Copy Pods Resources */,
+				EFF5F2CD97F1423CAA7D1B48 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -152,16 +200,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9DBC486A1F9B8C070074093C /* Build configuration list for PBXNativeTarget "XmppSwiftTests" */;
 			buildPhases = (
-				6F682E52AF10193F2F3222D5 /* [CP] Check Pods Manifest.lock */,
+				994450A5579FA777C3105ADA /* [CP] Check Pods Manifest.lock */,
 				9DBC485F1F9B8C070074093C /* Sources */,
 				9DBC48601F9B8C070074093C /* Frameworks */,
 				9DBC48611F9B8C070074093C /* Resources */,
-				E075011CB758064393F58D94 /* [CP] Embed Pods Frameworks */,
-				D2A04590FBD91FEFBA6F927F /* [CP] Copy Pods Resources */,
+				8098305E381EFF21734E2D16 /* [CP] Embed Pods Frameworks */,
+				DE1C99868D1D0CA04C481717 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9D1F63EB1F9BB90F009C0983 /* PBXTargetDependency */,
 			);
 			name = XmppSwiftTests;
 			productName = XmppTests;
@@ -180,6 +229,7 @@
 				TargetAttributes = {
 					9DBC48531F9B877D0074093C = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					9DBC48621F9B8C070074093C = {
@@ -224,25 +274,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6F682E52AF10193F2F3222D5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-XmppSwiftTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A2129B92088E0046392454A5 /* [CP] Check Pods Manifest.lock */ = {
+		280AF25209185D6BD76472C8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -260,7 +292,45 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D2A04590FBD91FEFBA6F927F /* [CP] Copy Pods Resources */ = {
+		8098305E381EFF21734E2D16 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-XmppSwiftTests/Pods-XmppSwiftTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Socket.swift/SocketSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Xml.swift/XmlSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XmlSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XmppSwiftTests/Pods-XmppSwiftTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		994450A5579FA777C3105ADA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-XmppSwiftTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DE1C99868D1D0CA04C481717 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -275,22 +345,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XmppSwiftTests/Pods-XmppSwiftTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E075011CB758064393F58D94 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XmppSwiftTests/Pods-XmppSwiftTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FF7CF109CC7367028B94AB80 /* [CP] Copy Pods Resources */ = {
+		EFF5F2CD97F1423CAA7D1B48 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -312,6 +367,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D1F63F81F9EB389009C0983 /* XmppInputStream.swift in Sources */,
+				9DBC48711F9BADCB0074093C /* JID.swift in Sources */,
+				9DBC486F1F9BABC80074093C /* XmppStream.swift in Sources */,
+				9DC07B141FA118A200A59542 /* XmppWriter.swift in Sources */,
+				9D1F63F21F9DDDFD009C0983 /* PlainAuthenticator.swift in Sources */,
+				9DC07B101FA1149C00A59542 /* XmppIQ.swift in Sources */,
+				9D1F63F01F9DD7F8009C0983 /* SASLAuthenticator.swift in Sources */,
+				9D1F63F41F9DDE36009C0983 /* AnonymusAuthenticator.swift in Sources */,
+				9DC07B121FA114F600A59542 /* XmppPresence.swift in Sources */,
+				9DC07B0E1FA1145F00A59542 /* XmppMessage.swift in Sources */,
+				9D1F63F61F9E52EC009C0983 /* XmppReader.swift in Sources */,
+				9DC07B161FA12EE600A59542 /* Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +391,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9D1F63EB1F9BB90F009C0983 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9DBC48531F9B877D0074093C /* XmppSwift */;
+			targetProxy = 9D1F63EA1F9BB90F009C0983 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9DBC485A1F9B877D0074093C /* Debug */ = {
@@ -445,8 +520,9 @@
 		};
 		9DBC485D1F9B877D0074093C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 433E0D61F2378EF0BA01F6FD /* Pods-XmppSwift.debug.xcconfig */;
+			baseConfigurationReference = C7594283A1C33602784DF0E9 /* Pods-XmppSwift.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -462,6 +538,7 @@
 				SDKROOT = "";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "macosx appletvsimulator appletvos iphoneos iphonesimulator";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
 			};
@@ -469,8 +546,9 @@
 		};
 		9DBC485E1F9B877D0074093C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE52514797CF613B3DEA37ED /* Pods-XmppSwift.release.xcconfig */;
+			baseConfigurationReference = 3142A38BD46231B101FC3372 /* Pods-XmppSwift.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -493,7 +571,7 @@
 		};
 		9DBC48681F9B8C070074093C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C2C10F7FFB7A2DB6639767F6 /* Pods-XmppSwiftTests.debug.xcconfig */;
+			baseConfigurationReference = 0D568569AA758BD36B240812 /* Pods-XmppSwiftTests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -514,7 +592,7 @@
 		};
 		9DBC48691F9B8C070074093C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B762C0FF99AB7EB46A0AB436 /* Pods-XmppSwiftTests.release.xcconfig */;
+			baseConfigurationReference = 1389E326DF2AD0F6C323528E /* Pods-XmppSwiftTests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;

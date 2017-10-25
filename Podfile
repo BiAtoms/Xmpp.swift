@@ -4,7 +4,8 @@ target 'XmppSwift' do
   use_frameworks!
 
   # Pods for XmppSwift
-    pod 'Socket.swift', '~> 2.0'
+    pod 'Socket.swift', :path => '../SocketSwift/.'
+    pod 'Xml.swift', :path => '../XmlSwift/.'
     
   target 'XmppSwiftTests' do
     inherit! :search_paths
