@@ -42,7 +42,7 @@ open class XmppReader {
         openElements = 0
     }
     
-    private var openElements = 0
+    fileprivate var openElements = 0
 }
 
 extension XmppReader: XmlParserDelegate {

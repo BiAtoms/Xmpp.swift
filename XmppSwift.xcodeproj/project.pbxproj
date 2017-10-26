@@ -14,6 +14,7 @@
 		9D1F63F41F9DDE36009C0983 /* AnonymusAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F31F9DDE36009C0983 /* AnonymusAuthenticator.swift */; };
 		9D1F63F61F9E52EC009C0983 /* XmppReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F51F9E52EC009C0983 /* XmppReader.swift */; };
 		9D1F63F81F9EB389009C0983 /* XmppInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F71F9EB389009C0983 /* XmppInputStream.swift */; };
+		9DB6E3FF1FA266C600F48512 /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6E3FE1FA266C600F48512 /* MulticastDelegate.swift */; };
 		9DBC48591F9B877D0074093C /* XmppSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DBC48571F9B877D0074093C /* XmppSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DBC48661F9B8C070074093C /* XmppSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC48651F9B8C070074093C /* XmppSwiftTests.swift */; };
 		9DBC486F1F9BABC80074093C /* XmppStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC486E1F9BABC80074093C /* XmppStream.swift */; };
@@ -46,6 +47,7 @@
 		9D1F63F31F9DDE36009C0983 /* AnonymusAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymusAuthenticator.swift; sourceTree = "<group>"; };
 		9D1F63F51F9E52EC009C0983 /* XmppReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppReader.swift; sourceTree = "<group>"; };
 		9D1F63F71F9EB389009C0983 /* XmppInputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppInputStream.swift; sourceTree = "<group>"; };
+		9DB6E3FE1FA266C600F48512 /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
 		9DBC48541F9B877D0074093C /* XmppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XmppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DBC48571F9B877D0074093C /* XmppSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XmppSwift.h; sourceTree = "<group>"; };
 		9DBC48581F9B877D0074093C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				9D1F63F31F9DDE36009C0983 /* AnonymusAuthenticator.swift */,
 				9DBC48701F9BADCB0074093C /* JID.swift */,
 				9DC07B151FA12EE600A59542 /* Helpers.swift */,
+				9DB6E3FE1FA266C600F48512 /* MulticastDelegate.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				9DC07B101FA1149C00A59542 /* XmppIQ.swift in Sources */,
 				9D1F63F01F9DD7F8009C0983 /* SASLAuthenticator.swift in Sources */,
 				9D1F63F41F9DDE36009C0983 /* AnonymusAuthenticator.swift in Sources */,
+				9DB6E3FF1FA266C600F48512 /* MulticastDelegate.swift in Sources */,
 				9DC07B121FA114F600A59542 /* XmppPresence.swift in Sources */,
 				9DC07B0E1FA1145F00A59542 /* XmppMessage.swift in Sources */,
 				9D1F63F61F9E52EC009C0983 /* XmppReader.swift in Sources */,

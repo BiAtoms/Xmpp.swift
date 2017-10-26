@@ -8,17 +8,29 @@
 
 import Foundation
 
+public protocol XmppStreamDelegate {
+    //ToDo: add willReceive..., didSend.., and willSend...
+    func stream(_ stream: XmppStream, didReceiveFeatures features: XmlElement)
+    func stream(_ stream: XmppStream, didReceiveError error: XmlElement)
+    func stream(_ stream: XmppStream, didReceiveMessage message: XmppMessage)
+    func stream(_ stream: XmppStream, didReceivePresence presence: XmppPresence)
+    func stream(_ stream: XmppStream, didReceiveIQ iq: XmppIQ)
+}
+
 //TODO: use serial queues to ensure correct order of sending/receiving things
 open class XmppStream {
     open let jid: JID
     open let keepAliveBytes: [Byte] = " ".bytes
     open let queue = DispatchQueue(label: "com.biatoms.xmpp-swift.stream")// + UUID().uuidString)
     
-    open var isConnectionNew = true
-    open var socket: Socket
-    open var reader: XmppReader
-    open var writer: XmppWriter
+    open private(set) var isConnectionNew = true
+    open private(set) var socket: Socket
+    open private(set) var reader: XmppReader
+    open private(set) var writer: XmppWriter
+    open private(set) var features: XmlElement? //holds <stream:stream> as well. It's parent
     open private(set) var state: State = .disconnected
+    open let delegate = MulticastDelegate<XmppStreamDelegate>()
+    
     public init(jid: JID) {
         self.jid = jid
         
@@ -64,6 +76,7 @@ open class XmppStream {
             xmlns:stream='http://etherx.jabber.org/streams'>
             """
             
+            self.state = .negotiating
             self.writer.write(s)
         }
     }
@@ -74,15 +87,20 @@ extension XmppStream: XmppReaderDelegate {
         queue.async {
             switch element.name {
             case "iq":
-                print("")
+                print("didReceiveIQ")
             case "presence":
-                print("")
+                print("didReceivePresence")
             case "message":
-                print("")
+                print("didReceiveMessage")
             case "stream:features", "features":
-                print("")
+                assert(self.state == .negotiating)
+                self.features = element
+                print("didReceiveFeatures")
+                self.delegate |> {
+                    $0.stream(self, didReceiveFeatures: element)
+                }
             case "stream:error", "error":
-                print("")
+                print("didReceiveError")
             default:
                 print("received unknown element", element)
             }
@@ -100,8 +118,13 @@ extension XmppStream: XmppWriterDelegate {
 
 
 extension XmppStream {
-    public enum State {
-        case disconnected
-        case connected
+    public struct State: RawRepresentable {
+        public let rawValue: Int
+        public init(rawValue: Int) { self.rawValue = rawValue }
+        
+        static let disconnected = State(rawValue: 0)
+        static let negotiating = State(rawValue: 10)
+        static let connected = State(rawValue: 100)
+        
     }
 }
