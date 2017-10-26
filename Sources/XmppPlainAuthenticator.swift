@@ -1,5 +1,5 @@
 //
-//  PlainAuthenticator.swift
+//  XmppPlainAuthenticator.swift
 //  XmppSwift
 //
 //  Created by Orkhan Alikhanov on 10/23/17.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-open class PlainAuthenticator: SASLAuthenticator {
+open class XmppPlainAuthenticator: XmppSASLAuthenticator {
     override open var mechanism: String { return "PLAIN" }
 }

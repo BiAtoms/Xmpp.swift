@@ -1,5 +1,5 @@
 //
-//  Xmpp.JID.swift
+//  XmppJID.swift
 //  XmppSwift
 //
 //  Created by Orkhan Alikhanov on 10/21/17.
@@ -9,7 +9,7 @@
 import Foundation
 
 //https://xmpp.org/extensions/xep-0029.html
-open class JID {
+open class XmppJID {
     open let user: String
     open let domain: String
     open let resource: String?

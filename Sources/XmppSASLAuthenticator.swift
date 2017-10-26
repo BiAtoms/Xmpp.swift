@@ -1,5 +1,5 @@
 //
-//  SASLAuthenticator.swift
+//  XmppSASLAuthenticator.swift
 //  XmppSwift
 //
 //  Created by Orkhan Alikhanov on 10/23/17.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-open class SASLAuthenticator {
+open class XmppSASLAuthenticator {
     open var mechanism: String { return "" }
 }

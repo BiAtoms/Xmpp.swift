@@ -19,7 +19,7 @@ public protocol XmppStreamDelegate {
 
 //TODO: use serial queues to ensure correct order of sending/receiving things
 open class XmppStream {
-    open let jid: JID
+    open let jid: XmppJID
     open let keepAliveBytes: [Byte] = " ".bytes
     open let queue = DispatchQueue(label: "com.biatoms.xmpp-swift.stream")// + UUID().uuidString)
     
@@ -31,7 +31,7 @@ open class XmppStream {
     open private(set) var state: State = .disconnected
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
     
-    public init(jid: JID) {
+    public init(jid: XmppJID) {
         self.jid = jid
         
         
