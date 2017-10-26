@@ -29,6 +29,7 @@ open class XmppStream {
     open private(set) var writer: XmppWriter
     open private(set) var features: XmlElement? //holds <stream:stream> as well. It's parent
     open private(set) var state: State = .disconnected
+    open var authenticator: XmppAuthenticator?
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
     
     public init(jid: XmppJID) {
@@ -80,11 +81,38 @@ open class XmppStream {
             self.writer.write(s)
         }
     }
+    
+    open func authenticate(with authenticator: XmppAuthenticator, password: String) {
+        queue.async {
+            assert(self.state == .connected)
+            self.state = .authenticating
+            self.authenticator = authenticator
+            self.writer.send(element: authenticator.start(jid: self.jid, password: password))
+        }
+    }
 }
 
 extension XmppStream: XmppReaderDelegate {
     public func reader(_ reader: XmppReader, didRead element: XmlElement) {
         queue.async {
+            if self.state == .authenticating {
+                assert(self.authenticator != nil)
+                
+                switch self.authenticator!.handleResponse(element) {
+                case .continue(let element):
+                    self.writer.send(element: element)
+                case .success:
+                    print("didAuthenticate")
+                    self.state = .connected
+                    self.authenticator = nil
+                    //self.delegate |> inform success
+                case .error(let error):
+                    print("didFailAuthenticate", error)
+                    self.authenticator = nil
+                }
+                return
+            }
+            
             switch element.name {
             case "iq":
                 print("didReceiveIQ")
@@ -99,6 +127,7 @@ extension XmppStream: XmppReaderDelegate {
                 self.delegate |> {
                     $0.stream(self, didReceiveFeatures: element)
                 }
+                self.state = .connected
             case "stream:error", "error":
                 print("didReceiveError")
             default:
@@ -124,6 +153,7 @@ extension XmppStream {
         
         static let disconnected = State(rawValue: 0)
         static let negotiating = State(rawValue: 10)
+        static let authenticating = State(rawValue: 20)
         static let connected = State(rawValue: 100)
         
     }

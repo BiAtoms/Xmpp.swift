@@ -8,6 +8,16 @@
 
 import Foundation
 
-open class XmppPlainAuthenticator: XmppSASLAuthenticator {
-    override open var mechanism: String { return "PLAIN" }
+open class XmppPlainAuthenticator: XmppAuthenticator {
+    open var mechanism: String { return "PLAIN" }
+    
+    open func start(jid: XmppJID, password: String) -> XmlElement {
+        let auth = authElement
+        auth.text = "\0\(jid.user)\0\(password)".base64Encoded
+        return auth
+    }
+    
+    open func handleResponse(_ element: XmlElement) -> XmppAuthenticatorResult {
+        return element.name == "success" ? .success : .error(nil)
+    }
 }

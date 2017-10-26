@@ -20,4 +20,8 @@ extension String {
     internal var bytes: [Byte] {
         return ([Byte])(self.utf8)
     }
+    
+    internal var base64Encoded: String {
+        return Data(self.utf8).base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
+    }
 }

@@ -14,14 +14,15 @@ import Dispatch
 class XmppSwiftTests: XCTestCase {
     
     func testExample() {
-        let stream = XmppStream(jid: JID(user: "orkhan", domain: "orkhan-pc"))
+        let stream = XmppStream(jid: XmppJID(user: "orkhan", domain: "orkhan-pc"))
         stream.connect(to: "192.168.138.1")
         stream.openNegotiation()
     
         let ex = expectation(description: "sdsd")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            stream.writer.write("</stream:stream>")
+            stream.authenticate(with: XmppPlainAuthenticator(), password: "orkhan12")
+//            stream.writer.write("</stream:stream>")
 //            ex.fulfill()
         }
     

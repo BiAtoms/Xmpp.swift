@@ -8,6 +8,14 @@
 
 import Foundation
 
-open class XmppAnonymusAuthenticator: XmppSASLAuthenticator {
-    override open var mechanism: String { return "ANONYMOUS" }
+open class XmppAnonymusAuthenticator: XmppAuthenticator {
+    open var mechanism: String { return "ANONYMOUS" }
+    
+    open func start(jid: XmppJID, password: String) -> XmlElement {
+        return authElement
+    }
+    
+    open func handleResponse(_ element: XmlElement) -> XmppAuthenticatorResult {
+        return element.name == "success" ? .success : .error(nil)
+    }
 }
