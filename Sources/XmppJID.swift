@@ -19,11 +19,28 @@ open class XmppJID {
         self.domain = domain
         self.resource = resource
     }
+}
+
+extension XmppJID {
+    public convenience init?(parsing string: String?) {
+        guard let string = string
+            else { return nil }
+        
+        let l = string.components(separatedBy: "@")
+        let s = l.last?.components(separatedBy: "/")
+        guard let user = l.first,
+            let domain = s?.first else {
+                return nil
+        }
+        let resource = s?.last
+        
+        //TODO: what is "string prep"?
+        self.init(user: user, domain: domain, resource: resource)
+    }
     
     open var bare: String {
         return "\(user)@\(domain)"
     }
-    
     
     open var full: String {
         guard let resource = resource else {

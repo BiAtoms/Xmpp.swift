@@ -7,7 +7,13 @@
 //
 
 
-open class XmppMessage: XmlElement {
-    
+open class XmppMessage: XmppStanza<XmppMessageType> {
+    override open class var stanza: String { return "message" }
 }
 
+public struct XmppMessageType: RawStringRepresentable {
+    public let rawValue: String
+    public init(rawValue: String) { self.rawValue = rawValue }
+    
+    static let chat = XmppMessageType(rawValue: "chat")
+}

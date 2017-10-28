@@ -7,22 +7,15 @@
 //
 
 
-open class XmppIQ: XmlElement {
+
+open class XmppIQ: XmppStanza<XmppIQType> {
+    override open class var stanza: String { return "iq" }
+}
+
+public struct XmppIQType: RawStringRepresentable {
+    public let rawValue: String
+    public init(rawValue: String) { self.rawValue = rawValue }
     
-    public init(type: Type, id: String? = nil) {
-        super.init(name: "iq")
-        
-        if let id = id {
-            self.attributes["id"] = id
-        }
-        self.attributes["type"] = type.rawValue
-    }
-    
-    public struct `Type`: RawRepresentable {
-        public let rawValue: String
-        public init(rawValue: String) { self.rawValue = rawValue }
-        
-        static let set = Type(rawValue: "set")
-        static let get = Type(rawValue: "get")
-    }
+    static let set = XmppIQType(rawValue: "set")
+    static let get = XmppIQType(rawValue: "get")
 }
