@@ -19,4 +19,16 @@ open class XmppJID {
         self.domain = domain
         self.resource = resource
     }
+    
+    open var bare: String {
+        return "\(user)@\(domain)"
+    }
+    
+    
+    open var full: String {
+        guard let resource = resource else {
+            return bare
+        }
+        return bare + "/\(resource)"
+    }
 }
