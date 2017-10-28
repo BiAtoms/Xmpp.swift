@@ -15,6 +15,9 @@
 		9D1F63F61F9E52EC009C0983 /* XmppReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F51F9E52EC009C0983 /* XmppReader.swift */; };
 		9D1F63F81F9EB389009C0983 /* XmppInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F63F71F9EB389009C0983 /* XmppInputStream.swift */; };
 		9DB6E3FF1FA266C600F48512 /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6E3FE1FA266C600F48512 /* MulticastDelegate.swift */; };
+		9DB6E4011FA3E77E00F48512 /* XmppFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6E4001FA3E77E00F48512 /* XmppFeatures.swift */; };
+		9DB6E4031FA3EB6A00F48512 /* XmppBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6E4021FA3EB6A00F48512 /* XmppBinder.swift */; };
+		9DB6E4051FA3EBCE00F48512 /* XmppDefaultBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6E4041FA3EBCE00F48512 /* XmppDefaultBinder.swift */; };
 		9DBC48591F9B877D0074093C /* XmppSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DBC48571F9B877D0074093C /* XmppSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DBC48661F9B8C070074093C /* XmppSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC48651F9B8C070074093C /* XmppSwiftTests.swift */; };
 		9DBC486F1F9BABC80074093C /* XmppStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC486E1F9BABC80074093C /* XmppStream.swift */; };
@@ -48,6 +51,9 @@
 		9D1F63F51F9E52EC009C0983 /* XmppReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppReader.swift; sourceTree = "<group>"; };
 		9D1F63F71F9EB389009C0983 /* XmppInputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppInputStream.swift; sourceTree = "<group>"; };
 		9DB6E3FE1FA266C600F48512 /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		9DB6E4001FA3E77E00F48512 /* XmppFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppFeatures.swift; sourceTree = "<group>"; };
+		9DB6E4021FA3EB6A00F48512 /* XmppBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppBinder.swift; sourceTree = "<group>"; };
+		9DB6E4041FA3EBCE00F48512 /* XmppDefaultBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppDefaultBinder.swift; sourceTree = "<group>"; };
 		9DBC48541F9B877D0074093C /* XmppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XmppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DBC48571F9B877D0074093C /* XmppSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XmppSwift.h; sourceTree = "<group>"; };
 		9DBC48581F9B877D0074093C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -116,6 +122,9 @@
 				9DC07B131FA118A200A59542 /* XmppWriter.swift */,
 				9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */,
 				9DC07B111FA114F600A59542 /* XmppPresence.swift */,
+				9DB6E4001FA3E77E00F48512 /* XmppFeatures.swift */,
+				9DB6E4021FA3EB6A00F48512 /* XmppBinder.swift */,
+				9DB6E4041FA3EBCE00F48512 /* XmppDefaultBinder.swift */,
 				9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */,
 				9D1F63F71F9EB389009C0983 /* XmppInputStream.swift */,
 				9D1F63EF1F9DD7F8009C0983 /* XmppAuthenticator.swift */,
@@ -370,13 +379,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DB6E4051FA3EBCE00F48512 /* XmppDefaultBinder.swift in Sources */,
 				9D1F63F81F9EB389009C0983 /* XmppInputStream.swift in Sources */,
 				9DBC48711F9BADCB0074093C /* XmppJID.swift in Sources */,
 				9DBC486F1F9BABC80074093C /* XmppStream.swift in Sources */,
+				9DB6E4031FA3EB6A00F48512 /* XmppBinder.swift in Sources */,
 				9DC07B141FA118A200A59542 /* XmppWriter.swift in Sources */,
 				9D1F63F21F9DDDFD009C0983 /* XmppPlainAuthenticator.swift in Sources */,
 				9DC07B101FA1149C00A59542 /* XmppIQ.swift in Sources */,
 				9D1F63F01F9DD7F8009C0983 /* XmppAuthenticator.swift in Sources */,
+				9DB6E4011FA3E77E00F48512 /* XmppFeatures.swift in Sources */,
 				9D1F63F41F9DDE36009C0983 /* XmppAnonymusAuthenticator.swift in Sources */,
 				9DB6E3FF1FA266C600F48512 /* MulticastDelegate.swift in Sources */,
 				9DC07B121FA114F600A59542 /* XmppPresence.swift in Sources */,

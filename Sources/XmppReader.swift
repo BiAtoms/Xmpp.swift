@@ -42,24 +42,34 @@ open class XmppReader {
         openElements = 0
     }
     
+    //TODO: re-think this. it should be simple
     fileprivate var openElements = 0
+    fileprivate var openStreamElements = 0
+    fileprivate var currentStreamElement: XmlElement!
 }
 
 extension XmppReader: XmlParserDelegate {
     public func parser(_ parser: XmlParser, didStartElement elementName: String) {
-        openElements += 1
-        
-        if openElements == 2 { // after <stream:stream>
-
+        if elementName != "stream:stream" {
+            openElements += 1
+        } else {
+            openStreamElements += 1
+            func rec(_ i: Int, e: XmlElement) -> XmlElement {
+                if i == 1 {
+                    return e
+                }
+                
+                return rec(i - 1, e: e.children.last!)
+            }
+            
+            currentStreamElement = rec(openStreamElements, e: parser.document.root!)
         }
     }
     
     public func parser(_ parser: XmlParser, didEndElement elementName: String) {
         openElements -= 1
-        if openElements == 1 { //only </stream:stream> remains, so we have read an element
-            delegate?.reader(self, didRead: parser.document.root!.children.last!)
-        } else if openElements == 0 { //finished doc
-
+        if openElements == 0 {
+            delegate?.reader(self, didRead: currentStreamElement.children.last!)
         }
     }
 }

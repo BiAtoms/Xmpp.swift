@@ -23,13 +23,15 @@ open class XmppStream {
     open let keepAliveBytes: [Byte] = " ".bytes
     open let queue = DispatchQueue(label: "com.biatoms.xmpp-swift.stream")// + UUID().uuidString)
     
-    open private(set) var isConnectionNew = true
     open private(set) var socket: Socket
     open private(set) var reader: XmppReader
     open private(set) var writer: XmppWriter
-    open private(set) var features: XmlElement? //holds <stream:stream> as well. It's parent
+    open private(set) var features: XmppFeatures? //holds <stream:stream> as well. It's parent
     open private(set) var state: State = .disconnected
-    open var authenticator: XmppAuthenticator?
+    open private(set) var isAuthenticated = false
+    open var shouldReopenNegotiation = true
+    open private(set) var authenticator: XmppAuthenticator?
+    open var binder: XmppBinder = XmppDefaultBinder()
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
     
     public init(jid: XmppJID) {
@@ -63,12 +65,9 @@ open class XmppStream {
     
     open func openNegotiation() {
         queue.async {
-            if self.isConnectionNew {
-                self.writer.write("<?xml version='1.0'?>")
-                self.isConnectionNew = false
-            }
             
             let s = """
+            <?xml version='1.0'?>
             <stream:stream
             to='\(self.jid.domain)'
             version='1.0'
@@ -97,6 +96,7 @@ extension XmppStream: XmppReaderDelegate {
         queue.async {
             if self.state == .authenticating {
                 assert(self.authenticator != nil)
+                assert(self.isAuthenticated == false)
                 
                 switch self.authenticator!.handleResponse(element) {
                 case .continue(let element):
@@ -105,13 +105,57 @@ extension XmppStream: XmppReaderDelegate {
                     print("didAuthenticate")
                     self.state = .connected
                     self.authenticator = nil
+                    self.isAuthenticated = true
+                    
+                    if self.shouldReopenNegotiation {
+                        self.openNegotiation()
+                    }
+                    
                     //self.delegate |> inform success
                 case .error(let error):
-                    print("didFailAuthenticate", error)
+                    print("didFailAuthenticate", error, element)
                     self.authenticator = nil
+                    self.state = .connected
                 }
                 return
             }
+            
+            if self.isAuthenticated && element.name == "stream:features" { //we just successfully logged in. try to bind and start session if needed
+                assert(self.features != nil) //this should not be nil either
+                
+                //TODO should we call delegate.didReceive features???
+                self.features = XmppFeatures(element)
+                
+                let features = self.features!
+                
+                if features.needsBinding {
+                    self.state = .binding
+                    self.writer.send(element: self.binder.start(jid: self.jid))
+                } else {
+                    self.state = .connected
+                }
+                return
+            }
+            
+            if self.state == .binding {
+                switch self.binder.handleResponse(element) {
+                case .success:
+                    print("Bound successfully with element:", element)
+                    assert(self.features != nil)
+                    let features = self.features!
+                    if features.needsSession {
+                        //start session
+                    } else {
+                        self.state = .connected
+                    }
+                case .error(let e):
+                    print("binding failed with element:", element, e)
+                case .continue(let element):
+                    self.writer.send(element: element)
+                }
+                return
+            }
+            
             
             switch element.name {
             case "iq":
@@ -120,9 +164,9 @@ extension XmppStream: XmppReaderDelegate {
                 print("didReceivePresence")
             case "message":
                 print("didReceiveMessage")
-            case "stream:features", "features":
+            case "stream:features":
                 assert(self.state == .negotiating)
-                self.features = element
+                self.features = XmppFeatures(element)
                 print("didReceiveFeatures")
                 self.delegate |> {
                     $0.stream(self, didReceiveFeatures: element)
@@ -154,6 +198,8 @@ extension XmppStream {
         static let disconnected = State(rawValue: 0)
         static let negotiating = State(rawValue: 10)
         static let authenticating = State(rawValue: 20)
+        static let binding = State(rawValue: 30)
+        static let startingSession = State(rawValue: 40)
         static let connected = State(rawValue: 100)
         
     }

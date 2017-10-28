@@ -24,4 +24,24 @@ extension String {
     internal var base64Encoded: String {
         return Data(self.utf8).base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
     }
+    
+    internal static var uuid: String {
+        return UUID().uuidString
+    }
+}
+
+extension XmlElement {
+    func element(named name: String, xmlns: String) -> XmlElement? {
+        return self.children.first {
+            $0.name == name && $0.attributes["xmlns"] == xmlns
+        }
+    }
+    
+    convenience init(_ other: XmlElement) {
+        self.init(name: other.name)
+        self.attributes = other.attributes
+        self.children = other.children
+        self.parent = other.parent
+        self.text = other.text
+    }
 }
