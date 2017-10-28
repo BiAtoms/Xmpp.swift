@@ -20,6 +20,7 @@ open class XmppInputStream: InputStream {
     override open func read(_ buffer: UnsafeMutablePointer<UInt8>, maxLength len: Int) -> Int {
         let n = try? socket.read(buffer, bufferSize: len)
         numberOfReadBytes += UInt64(n ?? 0)
+        //TODO: use a flag if document header is expected, then wipe it
         wipeDocumentHeaderIfNeeded(buffer, len)
         return n ?? -1
     }

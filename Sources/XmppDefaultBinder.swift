@@ -22,8 +22,10 @@ open class XmppDefaultBinder: XmppBinder {
     }
     
     public func handleResponse(_ element: XmlElement) -> XmppBinderResult {
-        return .success
+        guard let bind = element.element(named: "bind", xmlns: "urn:ietf:params:xml:ns:xmpp-bind") else {
+            return .error(nil)
+        }
+        
+        return bind.element(named: "jid") != nil ? .success : .error(nil)
     }
-    
-    //
 }

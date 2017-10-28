@@ -31,9 +31,11 @@ extension String {
 }
 
 extension XmlElement {
-    func element(named name: String, xmlns: String) -> XmlElement? {
+    func element(named name: String, xmlns: String? = nil, text: String? = nil) -> XmlElement? {
         return self.children.first {
-            $0.name == name && $0.attributes["xmlns"] == xmlns
+            $0.name == name &&
+            (xmlns == nil || $0.attributes["xmlns"] == xmlns) &&
+            (text == nil || $0.text == text)
         }
     }
     

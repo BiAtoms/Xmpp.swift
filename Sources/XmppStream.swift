@@ -30,8 +30,9 @@ open class XmppStream {
     open private(set) var state: State = .disconnected
     open private(set) var isAuthenticated = false
     open var shouldReopenNegotiation = true
-    open private(set) var authenticator: XmppAuthenticator?
+    open var authenticator: XmppAuthenticator = XmppPlainAuthenticator()
     open var binder: XmppBinder = XmppDefaultBinder()
+    open var sessionStarter: XmppSessionStater = XmppDefaultSessionStarter()
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
     
     public init(jid: XmppJID) {
@@ -81,12 +82,11 @@ open class XmppStream {
         }
     }
     
-    open func authenticate(with authenticator: XmppAuthenticator, password: String) {
+    open func authenticate(password: String) {
         queue.async {
             assert(self.state == .connected)
             self.state = .authenticating
-            self.authenticator = authenticator
-            self.writer.send(element: authenticator.start(jid: self.jid, password: password))
+            self.writer.send(element: self.authenticator.start(jid: self.jid, password: password))
         }
     }
 }
@@ -95,16 +95,15 @@ extension XmppStream: XmppReaderDelegate {
     public func reader(_ reader: XmppReader, didRead element: XmlElement) {
         queue.async {
             if self.state == .authenticating {
-                assert(self.authenticator != nil)
                 assert(self.isAuthenticated == false)
+                assert(self.features!.supportsAuthenticator(self.authenticator) == true)
                 
-                switch self.authenticator!.handleResponse(element) {
+                switch self.authenticator.handleResponse(element) {
                 case .continue(let element):
                     self.writer.send(element: element)
                 case .success:
                     print("didAuthenticate")
                     self.state = .connected
-                    self.authenticator = nil
                     self.isAuthenticated = true
                     
                     if self.shouldReopenNegotiation {
@@ -114,7 +113,6 @@ extension XmppStream: XmppReaderDelegate {
                     //self.delegate |> inform success
                 case .error(let error):
                     print("didFailAuthenticate", error, element)
-                    self.authenticator = nil
                     self.state = .connected
                 }
                 return
@@ -144,12 +142,27 @@ extension XmppStream: XmppReaderDelegate {
                     assert(self.features != nil)
                     let features = self.features!
                     if features.needsSession {
-                        //start session
+                        self.state = .startingSession
+                        self.writer.send(element: self.sessionStarter.start(jid: self.jid))
                     } else {
                         self.state = .connected
                     }
                 case .error(let e):
                     print("binding failed with element:", element, e)
+                case .continue(let element):
+                    self.writer.send(element: element)
+                }
+                return
+            }
+            
+            if self.state == .startingSession {
+                switch self.sessionStarter.handleResponse(element) {
+                case .success:
+                    print("Started session successfully with element:", element)
+                    self.state = .connected
+                case .error(let e):
+                    print("starting session failed with element:", element, e)
+                    self.state = .connected
                 case .continue(let element):
                     self.writer.send(element: element)
                 }
