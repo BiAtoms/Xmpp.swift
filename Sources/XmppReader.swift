@@ -70,6 +70,9 @@ extension XmppReader: XmlParserDelegate {
         openElements -= 1
         if openElements == 0 {
             delegate?.reader(self, didRead: currentStreamElement.children.last!)
+        } else if openElements < 0 {
+            assert(elementName == "stream:stream")
+            delegate?.reader(self, didRead: currentStreamElement)
         }
     }
 }
