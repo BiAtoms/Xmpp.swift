@@ -23,7 +23,7 @@ open class XmppStream {
     open let keepAliveBytes: [Byte] = " ".bytes
     open let queue = DispatchQueue(label: "com.biatoms.xmpp-swift.stream")// + UUID().uuidString)
     
-    open private(set) var socket: Socket
+    open private(set) var socket: XmppSocket
     open private(set) var reader: XmppReader
     open private(set) var writer: XmppWriter
     open private(set) var features: XmppFeatures? //holds <stream:stream> as well. It's parent
@@ -41,7 +41,7 @@ open class XmppStream {
         
         //dump
         
-        self.socket = Socket(with: 0)
+        self.socket = XmppSocket(with: 0)
         self.reader = XmppReader(socket: socket)
         self.writer = XmppWriter(socket: socket)
     }
@@ -49,7 +49,8 @@ open class XmppStream {
     open func connect(to host: String, port: Port = 5222) {
         queue.async {
             do {
-                self.socket = try Socket(.inet, type: .stream, protocol: .tcp)
+                self.socket = try XmppSocket(.inet, type: .stream, protocol: .tcp)
+                self.socket.delegate = self
                 try self.socket.connect(port: port, address: host)
                 self.state = .connected
                 self.reader = XmppReader(socket: self.socket)
@@ -202,6 +203,13 @@ extension XmppStream: XmppWriterDelegate {
     }
 }
 
+extension XmppStream: XmppSocketDelegate {
+    public func socket(_ socket: XmppSocket, didDisconnect error: Error?) {
+        //TODO: clean & call delegates
+        //TODO: in which queue is this called???
+        self.state = .disconnected
+    }
+}
 
 extension XmppStream {
     public struct State: RawRepresentable {
