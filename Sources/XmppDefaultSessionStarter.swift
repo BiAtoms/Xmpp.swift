@@ -8,13 +8,14 @@
 
 open class XmppDefaultSessionStarter: XmppSessionStater {
     public func start(jid: XmppJID) -> XmlElement {
-        let iq = XmppIQ(type: .set, id: .uuid)
+        let iq = XmppIQ(type: .set, id: "session-start")
         let session = XmlElement(name: "session", xmlns: "urn:ietf:params:xml:ns:xmpp-session")
         iq.children.append(session)
         return iq
     }
     
     public func handleResponse(_ element: XmlElement) -> XmppSessionStarterResult {
+        assert(element.attributes["id"] == "session-start")
         return element.attributes["type"] == "result" ? .success : .error(nil)
     }
 }
