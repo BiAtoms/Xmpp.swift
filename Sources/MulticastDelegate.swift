@@ -7,6 +7,9 @@
 //
 //  See https://github.com/jonasman/MulticastDelegate
 
+//  Modified by Orkhan Alikhanov.
+//  Copyright © 2017 BiAtoms. All rights reserved.
+
 import Foundation
 
 /**
@@ -15,7 +18,7 @@ import Foundation
 open class MulticastDelegate<T> {
     
     /// The delegates hash table.
-    private let delegates: NSHashTable<AnyObject>
+    internal let delegates: NSHashTable<AnyObject>
     
     /**
      *  Use the property to check if no delegates are contained there.
@@ -57,7 +60,7 @@ open class MulticastDelegate<T> {
      *
      *  - parameter delegate:  The delegate to be added.
      */
-    public func addDelegate(_ delegate: T) {
+    public func add(_ delegate: T) {
         delegates.add(delegate as AnyObject)
     }
     
@@ -68,21 +71,19 @@ open class MulticastDelegate<T> {
      *
      *  - parameter delegate:  The delegate to be removed.
      */
-    public func removeDelegate(_ delegate: T) {
+    public func remove(_ delegate: T) {
         delegates.remove(delegate as AnyObject)
     }
     
     /**
      *  Use this method to invoke a closure on each delegate.
      *
-     *  Alternatively, you can use the `|>` operator to invoke a given closure on each delegate.
-     *
-     *  - parameter invocation: The closure to be invoked on each delegate.
+     *  - parameter block: The closure to be invoked on each delegate.
      */
-    public func invokeDelegates(_ invocation: (T) -> ()) {
+    public func invoke(_ block: (T) -> ()) {
         
         for delegate in delegates.allObjects {
-            invocation(delegate as! T)
+            block(delegate as! T)
         }
     }
     
@@ -93,7 +94,7 @@ open class MulticastDelegate<T> {
      *
      *  - returns: `true` if the delegate is found or `false` otherwise
      */
-    public func containsDelegate(_ delegate: T) -> Bool {
+    public func contains(_ delegate: T) -> Bool {
         return delegates.contains(delegate as AnyObject)
     }
 }
@@ -108,7 +109,7 @@ open class MulticastDelegate<T> {
  */
 public func +=<T>(left: MulticastDelegate<T>, right: T) {
     
-    left.addDelegate(right)
+    left.add(right)
 }
 
 /**
@@ -121,25 +122,5 @@ public func +=<T>(left: MulticastDelegate<T>, right: T) {
  */
 public func -=<T>(left: MulticastDelegate<T>, right: T) {
     
-    left.removeDelegate(right)
-}
-
-/**
- *  Use this operator invoke a closure on each delegate.
- *
- *  This is a convenience operator for calling `invokeDelegates`.
- *
- *  - parameter left:   The multicast delegate
- *  - parameter right:  The closure to be invoked on each delegate
- *
- *  - returns: The `MulticastDelegate` after all its delegates have been invoked
- */
-precedencegroup MulticastPrecedence {
-    associativity: left
-    higherThan: TernaryPrecedence
-}
-infix operator |> : MulticastPrecedence
-public func |><T>(left: MulticastDelegate<T>, right: (T) -> ()) {
-    
-    left.invokeDelegates(right)
+    left.remove(right)
 }
