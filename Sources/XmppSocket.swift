@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import SocketSwift
 
 public protocol XmppSocketDelegate: class {
     func socket(_ socket: XmppSocket, didDisconnect error: Error?)
+//    func socket(_ socket: XmppSocket, didConnect )
 }
 
 open class XmppSocket: Socket {
@@ -28,10 +30,21 @@ open class XmppSocket: Socket {
         do {
             return try block()
         } catch {
+            //TODO: rethink this
             if (error as! Socket.Error).errno != EWOULDBLOCK { //not timeout
                 delegate?.socket(self, didDisconnect: error)
             }
             throw error
         }
+    }
+}
+
+extension XmppSocket {
+    open class func resolveAndConnect(to domain: String, queue: DispatchQueue, completion: (XmppSocket?)-> Void) {
+        //resolve the host through SRV at queue
+    }
+    
+    open class func connect(to host: String, port: Port, queue: DispatchQueue, completion: (XmppSocket?)-> Void) {
+        //resolve the host through SRV at queue
     }
 }
