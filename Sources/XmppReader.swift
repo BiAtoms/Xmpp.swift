@@ -7,9 +7,7 @@
 //
 
 import Foundation
-import Dispatch
 import XmlSwift
-import SocketSwift
 
 public protocol XmppReaderDelegate: class {
     func reader(_ reader: XmppReader, didRead element: XmlElement)
@@ -31,9 +29,16 @@ open class XmppReader {
     
     func read() {
         queue.async {
-            if !self.xmlParser.parse() {
-                print("Failed to parse", self.xmlParser.error as Any)
-            }
+            // This method calls `XmppInputStream.read()` which calls `XmppSocket.read()` internally
+            // The `XmppSocket.read()` will block until disconnection (or timeout, if specified)
+
+            // `XmppInputStream.read()` will return 0 when `XmppSocket.read()` throws.
+            // So that, the `XMLParser` will always fail with an error that stream is finished
+            // but the document is incomplete.
+            
+            // So, the return value will always be `false` and we ignore it.
+            // Disconnection/timeout will reported by `XmppSocket`
+            _ = self.xmlParser.parse()
         }
     }
     
