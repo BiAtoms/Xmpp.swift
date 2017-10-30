@@ -10,7 +10,6 @@ import Dispatch
 import XmlSwift
 import SocketSwift
 
-public typealias Socket = SocketSwift.Socket
 public typealias XmlElement = XmlSwift.XmlElement
 public typealias DispatchQueue = Dispatch.DispatchQueue
 public typealias Port = SocketSwift.Port
@@ -47,3 +46,4 @@ extension XmlElement {
         self.text = other.text
     }
 }
+

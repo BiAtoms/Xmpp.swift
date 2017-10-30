@@ -16,10 +16,10 @@ public protocol XmppWriterDelegate: class {
 open class XmppWriter {
     open let queue = DispatchQueue(label: "com.biatoms.xmpp-swift.writer")
     open weak var delegate: XmppWriterDelegate?
-    open let socket: Socket
+    open let socket: XmppSocket
     open private(set) var numberOfWrittenBytes: UInt64 = 0
     
-    public init(socket: Socket) {
+    public init(socket: XmppSocket) {
         self.socket = socket
     }
     

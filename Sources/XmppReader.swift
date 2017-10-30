@@ -23,7 +23,7 @@ open class XmppReader {
         xmlParser.delegate = self
     }
     
-    public convenience init(socket: Socket) {
+    public convenience init(socket: XmppSocket) {
         self.init(stream: XmppReader.Stream(socket: socket))
     }
     
@@ -85,10 +85,10 @@ extension XmppReader: XmlParserDelegate {
 
 extension XmppReader {
     open class Stream: InputStream {
-        open let socket: Socket
+        open let socket: XmppSocket
         open private(set) var numberOfReadBytes: UInt64 = 0
         
-        public init(socket: Socket) {
+        public init(socket: XmppSocket) {
             self.socket = socket
             super.init(data: Data())
         }
