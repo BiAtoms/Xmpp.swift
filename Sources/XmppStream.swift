@@ -29,7 +29,6 @@ open class XmppStream {
     open var shouldReopenNegotiation = true
     open var authenticator: XmppAuthenticator = XmppPlainAuthenticator()
     open var binder: XmppBinder = XmppDefaultBinder()
-    open var sessionStarter: XmppSessionStater = XmppDefaultSessionStarter()
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
     
     public init(jid: XmppJID) {
@@ -139,30 +138,9 @@ extension XmppStream: XmppReaderDelegate {
             switch binder.handleResponse(element) {
             case .success:
                 print("Bound successfully with element:", element)
-                assert(self.features != nil)
-                let features = self.features!
-                if false && features.needsSession {
-                    state = .startingSession
-                    send(element: sessionStarter.start(jid: jid))
-                } else {
-                    state = .connected
-                }
+                state = .connected
             case .error(let e):
                 print("binding failed with element:", element, e)
-            case .continue(let element):
-                send(element: element)
-            }
-            return
-        }
-        
-        if state == .startingSession {
-            switch sessionStarter.handleResponse(element) {
-            case .success:
-                print("Started session successfully with element:", element)
-                state = .connected
-            case .error(let e):
-                print("starting session failed with element:", element, e)
-                state = .connected
             case .continue(let element):
                 send(element: element)
             }
@@ -232,7 +210,6 @@ extension XmppStream {
         static let negotiating = State(rawValue: 10)
         static let authenticating = State(rawValue: 20)
         static let binding = State(rawValue: 30)
-        static let startingSession = State(rawValue: 40)
         static let connected = State(rawValue: 100)
         
     }

@@ -24,8 +24,4 @@ open class XmppFeatures: XmlElement {
     open var needsBinding: Bool {
         return self.element(named: "bind", xmlns: "urn:ietf:params:xml:ns:xmpp-bind") != nil
     }
-    
-    open var needsSession: Bool {
-        return self.element(named: "session", xmlns: "urn:ietf:params:xml:ns:xmpp-session") != nil
-    }
 }
