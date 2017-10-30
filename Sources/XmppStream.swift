@@ -66,20 +66,22 @@ open class XmppStream {
     }
     
     open func openNegotiation() {
-        queue.async {
-            
-            let s = """
-            <?xml version='1.0'?>
-            <stream:stream
-            to='\(self.jid.domain)'
-            version='1.0'
-            xml:lang='en'
-            xmlns='jabber:client'
-            xmlns:stream='http://etherx.jabber.org/streams'>
-            """
-            
-            self.state = .negotiating
-            self.writer.write(s)
+        assert(state == .connected)
+        let s = """
+        <?xml version='1.0'?>
+        <stream:stream
+        to='\(jid.domain)'
+        version='1.0'
+        xml:lang='en'
+        xmlns='jabber:client'
+        xmlns:stream='http://etherx.jabber.org/streams'>
+        """
+        
+        state = .negotiating
+        writer.write(s) { isWritten in
+            if !isWritten {
+                print("failed to open neogtiation")
+            }
         }
     }
     
@@ -197,9 +199,11 @@ extension XmppStream: XmppReaderDelegate {
 
 extension XmppStream: XmppWriterDelegate {
     public func writer(_ writer: XmppWriter, didSend element: XmlElement) {
-        queue.async {
-            //
-        }
+        //
+    }
+    
+    public func writer(_ writer: XmppWriter, didFailToSend element: XmlElement) {
+        //
     }
 }
 

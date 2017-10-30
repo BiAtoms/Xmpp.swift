@@ -10,6 +10,7 @@ import Foundation
 
 public protocol XmppWriterDelegate: class {
     func writer(_ writer: XmppWriter, didSend element: XmlElement)
+    func writer(_ writer: XmppWriter, didFailToSend element: XmlElement)
 }
 
 open class XmppWriter {
@@ -23,28 +24,25 @@ open class XmppWriter {
     }
     
     open func send(element: XmlElement) {
-        queue.async {
-            do {
-                try self.write(element.xml.bytes)
+        write(element.xml) { isWritten in
+            if isWritten {
                 self.delegate?.writer(self, didSend: element)
-            } catch {
-                print("failed to write element", error)
+            } else {
+                self.delegate?.writer(self, didFailToSend: element)
             }
         }
     }
     
-    open func write(_ string: String) {
+    open func write(_ string: String, completion: @escaping (Bool) -> Void) {
         queue.async {
             do {
-                try self.write(string.bytes)
+                let bytes = string.bytes
+                self.numberOfWrittenBytes += UInt64(bytes.count)
+                try self.socket.write(bytes)
+                completion(true)
             } catch {
-                print("failed to write string", error)
+                completion(false)
             }
         }
-    }
-    
-    private func write(_ bytes: [Byte]) throws {
-        try socket.write(bytes)
-        numberOfWrittenBytes += UInt64(bytes.count)
     }
 }
