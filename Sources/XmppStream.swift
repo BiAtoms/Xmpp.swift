@@ -9,11 +9,32 @@
 import Foundation
 
 public protocol XmppStreamDelegate {
-    // TODO: think about adding willReceive...,
-    // TODO: add , and willSend...
-    func stream(_ stream: XmppStream, didReceiveMessage message: XmppMessage)
-    func stream(_ stream: XmppStream, didReceivePresence presence: XmppPresence)
-    func stream(_ stream: XmppStream, didReceiveIQ iq: XmppIQ) -> Bool
+    func streamDidConnect(_ stream: XmppStream)
+    func streamDidDisconnect(_ stream: XmppStream)
+    func streamDidFailToConnect(_ stream: XmppStream)
+
+    func streamDidStartNegotiation(_ stream: XmppStream)
+    func streamDidFailToStartNegotiation(_ stream: XmppStream)
+    
+    func streamDidAuthenticate(_ stream: XmppStream)
+    func stream(_ stream: XmppStream, didFailToAuthenticate element: XmlElement)
+    
+    func stream(_ stream: XmppStream, didReceive message: XmppMessage)
+    func stream(_ stream: XmppStream, didReceive presence: XmppPresence)
+    func stream(_ stream: XmppStream, didReceive iq: XmppIQ) -> Bool
+    func strean(_ stream: XmppStream, didReceive element: XmlElement)
+    
+    func stream(_ stream: XmppStream, didSend message: XmppMessage)
+    func stream(_ stream: XmppStream, didSend presence: XmppPresence)
+    func stream(_ stream: XmppStream, didSend iq: XmppIQ)
+    func stream(_ stream: XmppStream, didSend element: XmlElement)
+    
+    func stream(_ stream: XmppStream, didFailToSend message: XmppMessage)
+    func stream(_ stream: XmppStream, didFailToSend presence: XmppPresence)
+    func stream(_ stream: XmppStream, didFailToSend iq: XmppIQ)
+    func stream(_ stream: XmppStream, didFailToSend element: XmlElement)
+    
+    
 }
 
 //TODO: use serial queues to ensure correct order of sending/receiving things
@@ -55,8 +76,13 @@ open class XmppStream {
                 self.reader.read() //start listening on incoming data, runs on a separate queue.
                 
                 self.state = .connected
+                self.delegate.invoke {
+                    $0.streamDidConnect(self)
+                }
             } catch {
-                print("failed to connect", error)
+                self.delegate.invoke {
+                    $0.streamDidFailToConnect(self)
+                }
             }
         }
     }
@@ -75,8 +101,14 @@ open class XmppStream {
         
         state = .negotiating
         send(raw: s) { isWritten in
-            if !isWritten {
-                print("failed to open neogtiation")
+            if isWritten {
+                self.delegate.invoke {
+                    $0.streamDidStartNegotiation(self)
+                }
+            } else {
+                self.delegate.invoke {
+                    $0.streamDidFailToStartNegotiation(self)
+                }
             }
         }
     }
@@ -98,15 +130,20 @@ extension XmppStream: XmppReaderDelegate {
             case .continue(let element):
                 send(element: element)
             case .success:
-                print("didAuthenticate")
                 state = .connected
                 isAuthenticated = true
                 
+                delegate.invoke {
+                    $0.streamDidAuthenticate(self)
+                }
+                
                 if shouldReopenNegotiation {
-                    openNegotiation() //called second time
+                    openNegotiation() //calling second time
                 }
             case .error:
-                print("didFailAuthenticate", element)
+                delegate.invoke {
+                    $0.stream(self, didFailToAuthenticate: element)
+                }
                 state = .connected
             }
             return
@@ -133,10 +170,12 @@ extension XmppStream: XmppReaderDelegate {
         if state == .binding {
             switch binder.handleResponse(element) {
             case .success:
-                print("Bound successfully with element:", element)
+//                print("Bound successfully with element:", element)
                 state = .connected
             case .error:
-                print("binding failed with element:", element)
+//                print("binding failed with element:", element)
+                state = .connected
+                break
             case .continue(let element):
                 send(element: element)
             }
@@ -146,7 +185,7 @@ extension XmppStream: XmppReaderDelegate {
         switch element.name {
         case "iq":
             let handled = delegate.invokeAndStopIf(true) {
-                $0.stream(self, didReceiveIQ: XmppIQ(element))
+                $0.stream(self, didReceive: XmppIQ(element))
             }
             
             if !handled {
@@ -155,11 +194,11 @@ extension XmppStream: XmppReaderDelegate {
             
         case "presence":
             delegate.invoke {
-                $0.stream(self, didReceivePresence: XmppPresence(element))
+                $0.stream(self, didReceive: XmppPresence(element))
             }
         case "message":
             delegate.invoke {
-                $0.stream(self, didReceiveMessage: XmppMessage(element))
+                $0.stream(self, didReceive: XmppMessage(element))
             }
         case "stream:features":
             assert(state == .negotiating)
@@ -172,7 +211,9 @@ extension XmppStream: XmppReaderDelegate {
             //disconnect
             break
         default:
-            print("received unknown element", element)
+            delegate.invoke {
+                $0.strean(self, didReceive: element)
+            }
         }
     }
 }
@@ -181,9 +222,43 @@ extension XmppStream {
     open func send(element: XmlElement) {
         send(raw: element.xml) { isWritten in
             if isWritten {
-                //self.delegate?.stream(self, didSend: element)
+                switch element.name {
+                case "message":
+                    self.delegate.invoke {
+                        $0.stream(self, didSend: XmppMessage(element))
+                    }
+                case "presence":
+                    self.delegate.invoke {
+                        $0.stream(self, didSend: XmppPresence(element))
+                    }
+                case "iq":
+                    self.delegate.invoke {
+                        $0.stream(self, didSend: XmppIQ(element))
+                    }
+                default:
+                    self.delegate.invoke {
+                        $0.stream(self, didSend: element)
+                    }
+                }
             } else {
-                //self.delegate?.stream(self, didFailToSend: element)
+                switch element.name {
+                case "message":
+                    self.delegate.invoke {
+                        $0.stream(self, didFailToSend: XmppMessage(element))
+                    }
+                case "presence":
+                    self.delegate.invoke {
+                        $0.stream(self, didFailToSend: XmppPresence(element))
+                    }
+                case "iq":
+                    self.delegate.invoke {
+                        $0.stream(self, didFailToSend: XmppIQ(element))
+                    }
+                default:
+                    self.delegate.invoke {
+                        $0.stream(self, didFailToSend: element)
+                    }
+                }
             }
         }
     }
@@ -208,6 +283,9 @@ extension XmppStream: XmppSocketDelegate {
         //TODO: in which queue is this called???
         guard state != .disconnected else { return }
         
+        delegate.invoke {
+            $0.streamDidDisconnect(self)
+        }
         state = .disconnected
     }
 }
@@ -222,6 +300,5 @@ extension XmppStream {
         static let authenticating = State(rawValue: 20)
         static let binding = State(rawValue: 30)
         static let connected = State(rawValue: 100)
-        
     }
 }
