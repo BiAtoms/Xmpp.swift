@@ -42,21 +42,22 @@ open class XmppStream {
         reader = XmppReader(socket: socket)
     }
     
-    //TODO: make this guy async
     open func connect(to host: String, port: Port = 5222) {
-        
-        assert(state == .disconnected)
-        do {
-            socket = try XmppSocket(.inet, type: .stream, protocol: .tcp)
-            socket.delegate = self
-            try socket.connect(port: port, address: host)
-            state = .connected
-            reader = XmppReader(socket: socket)
-            
-            reader.delegate = self
-            reader.read() //start listening on incoming data
-        } catch {
-            print("failed to connect", error)
+        queue.async {
+            assert(self.state == .disconnected)
+            do {
+                self.socket = try XmppSocket(.inet, type: .stream, protocol: .tcp)
+                self.socket.delegate = self
+                try self.socket.connect(port: port, address: host)
+                
+                self.reader = XmppReader(socket: self.socket)
+                self.reader.delegate = self
+                self.reader.read() //start listening on incoming data, runs on a separate queue.
+                
+                self.state = .connected
+            } catch {
+                print("failed to connect", error)
+            }
         }
     }
     
