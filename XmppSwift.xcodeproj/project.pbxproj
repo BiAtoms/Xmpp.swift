@@ -26,7 +26,6 @@
 		9DC07B0E1FA1145F00A59542 /* XmppMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */; };
 		9DC07B101FA1149C00A59542 /* XmppIQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */; };
 		9DC07B121FA114F600A59542 /* XmppPresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B111FA114F600A59542 /* XmppPresence.swift */; };
-		9DC07B141FA118A200A59542 /* XmppWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B131FA118A200A59542 /* XmppWriter.swift */; };
 		9DC07B161FA12EE600A59542 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B151FA12EE600A59542 /* Helpers.swift */; };
 		BCA2BA25AFE59F5775718929 /* Pods_XmppSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 676D634A573D008BD4FF81B8 /* Pods_XmppSwiftTests.framework */; };
 /* End PBXBuildFile section */
@@ -67,7 +66,6 @@
 		9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppMessage.swift; sourceTree = "<group>"; };
 		9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppIQ.swift; sourceTree = "<group>"; };
 		9DC07B111FA114F600A59542 /* XmppPresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppPresence.swift; sourceTree = "<group>"; };
-		9DC07B131FA118A200A59542 /* XmppWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppWriter.swift; sourceTree = "<group>"; };
 		9DC07B151FA12EE600A59542 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		B0BBEE104DC5B89D96E4FD38 /* Pods_XmppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7594283A1C33602784DF0E9 /* Pods-XmppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwift/Pods-XmppSwift.debug.xcconfig"; sourceTree = "<group>"; };
@@ -122,7 +120,6 @@
 				9DBC486E1F9BABC80074093C /* XmppStream.swift */,
 				9DAA7CEA1FA5CAEE00B12978 /* XmppSocket.swift */,
 				9D1F63F51F9E52EC009C0983 /* XmppReader.swift */,
-				9DC07B131FA118A200A59542 /* XmppWriter.swift */,
 				9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */,
 				9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */,
 				9DC07B111FA114F600A59542 /* XmppPresence.swift */,
@@ -388,7 +385,6 @@
 				9DBC486F1F9BABC80074093C /* XmppStream.swift in Sources */,
 				9DAA7CEB1FA5CAEE00B12978 /* XmppSocket.swift in Sources */,
 				9DB6E4031FA3EB6A00F48512 /* XmppBinder.swift in Sources */,
-				9DC07B141FA118A200A59542 /* XmppWriter.swift in Sources */,
 				9D1F63F21F9DDDFD009C0983 /* XmppPlainAuthenticator.swift in Sources */,
 				9DC07B101FA1149C00A59542 /* XmppIQ.swift in Sources */,
 				9D1F63F01F9DD7F8009C0983 /* XmppAuthenticator.swift in Sources */,

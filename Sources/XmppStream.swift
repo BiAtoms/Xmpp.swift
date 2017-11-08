@@ -22,14 +22,17 @@ open class XmppStream {
     
     open private(set) var socket: XmppSocket
     open private(set) var reader: XmppReader
-    open private(set) var writer: XmppWriter
     open private(set) var features: XmppFeatures? //holds <stream:stream> as well. It's parent
     open private(set) var state: State = .disconnected
     open private(set) var isAuthenticated = false
+    open private(set) var numberOfWrittenBytes: UInt64 = 0
     open var shouldReopenNegotiation = true
     open var authenticator: XmppAuthenticator = XmppPlainAuthenticator()
     open var binder: XmppBinder = XmppDefaultBinder()
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
+    
+    /// A serial queue for connect/send.
+    open let queue = DispatchQueue(label: "com.biatoms.xmpp-swift.writer")
     
     public init(jid: XmppJID) {
         self.jid = jid
@@ -37,11 +40,11 @@ open class XmppStream {
         //dump
         socket = XmppSocket(with: 0)
         reader = XmppReader(socket: socket)
-        writer = XmppWriter(socket: socket)
     }
     
     //TODO: make this guy async
     open func connect(to host: String, port: Port = 5222) {
+        
         assert(state == .disconnected)
         do {
             socket = try XmppSocket(.inet, type: .stream, protocol: .tcp)
@@ -49,10 +52,8 @@ open class XmppStream {
             try socket.connect(port: port, address: host)
             state = .connected
             reader = XmppReader(socket: socket)
-            writer = XmppWriter(socket: socket)
             
             reader.delegate = self
-            writer.delegate = self
             reader.read() //start listening on incoming data
         } catch {
             print("failed to connect", error)
@@ -72,7 +73,7 @@ open class XmppStream {
         """
         
         state = .negotiating
-        writer.write(s) { isWritten in
+        send(raw: s) { isWritten in
             if !isWritten {
                 print("failed to open neogtiation")
             }
@@ -83,10 +84,6 @@ open class XmppStream {
         assert(state == .connected)
         state = .authenticating
         send(element: authenticator.start(jid: jid, password: password))
-    }
-    
-    open func send(element: XmlElement) {
-        writer.send(element: element)
     }
 }
 
@@ -181,13 +178,28 @@ extension XmppStream: XmppReaderDelegate {
     }
 }
 
-extension XmppStream: XmppWriterDelegate {
-    public func writer(_ writer: XmppWriter, didSend element: XmlElement) {
-        //
+extension XmppStream {
+    open func send(element: XmlElement) {
+        send(raw: element.xml) { isWritten in
+            if isWritten {
+                //self.delegate?.stream(self, didSend: element)
+            } else {
+                //self.delegate?.stream(self, didFailToSend: element)
+            }
+        }
     }
     
-    public func writer(_ writer: XmppWriter, didFailToSend element: XmlElement) {
-        //
+    open func send(raw string: String, completion: @escaping (Bool) -> Void) {
+        queue.async {
+            do {
+                let bytes = string.bytes
+                try self.socket.write(bytes)
+                self.numberOfWrittenBytes += UInt64(bytes.count)
+                completion(true)
+            } catch {
+                completion(false)
+            }
+        }
     }
 }
 
