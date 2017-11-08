@@ -24,6 +24,6 @@ extension XmppAuthenticator {
 
 public enum XmppAuthenticatorResult {
     case success
-    case error(Error?)
+    case error
     case `continue`(element: XmlElement)
 }

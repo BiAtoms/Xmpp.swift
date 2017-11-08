@@ -18,6 +18,6 @@ open class XmppPlainAuthenticator: XmppAuthenticator {
     }
     
     open func handleResponse(_ element: XmlElement) -> XmppAuthenticatorResult {
-        return element.name == "success" ? .success : .error(nil)
+        return element.name == "success" ? .success : .error
     }
 }

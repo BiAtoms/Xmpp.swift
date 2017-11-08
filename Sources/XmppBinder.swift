@@ -15,6 +15,6 @@ public protocol XmppBinder {
 
 public enum XmppBinderResult {
     case success
-    case error(Error?)
+    case error
     case `continue`(element: XmlElement)
 }

@@ -105,10 +105,8 @@ extension XmppStream: XmppReaderDelegate {
                 if shouldReopenNegotiation {
                     openNegotiation() //called second time
                 }
-                
-            //delegate |> inform success
-            case .error(let error):
-                print("didFailAuthenticate", error, element)
+            case .error:
+                print("didFailAuthenticate", element)
                 state = .connected
             }
             return
@@ -137,8 +135,8 @@ extension XmppStream: XmppReaderDelegate {
             case .success:
                 print("Bound successfully with element:", element)
                 state = .connected
-            case .error(let e):
-                print("binding failed with element:", element, e)
+            case .error:
+                print("binding failed with element:", element)
             case .continue(let element):
                 send(element: element)
             }
