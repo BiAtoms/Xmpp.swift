@@ -15,7 +15,17 @@ class XmppSwiftTests: XCTestCase {
     
     let stream = XmppStream(jid: XmppJID(user: "orkhan", domain: "orkhan-pc", resource: "test"))
     
-    func testExample() {
+    func testMe() {
+        
+        print(XmppSrvResolver.resolve(domain: "gmail.com", timeout: 5))
+        print(XmppSrvResolver.resolve(domain: "chat.facebook.com", timeout: 5))
+
+        
+        let ex = expectation(description: "23")
+        waitForExpectations(timeout: 10000, handler: nil)
+    }
+    
+    func dstestExample() {
         stream.send(element: XmlElement(name: "hey"))
         stream.send(element: XmlElement(name: "hey2"))
         stream.send(element: XmlElement(name: "hey3"))
@@ -36,7 +46,7 @@ class XmppSwiftTests: XCTestCase {
         waitForExpectations(timeout: 10000, handler: nil)
     }
     
-    static var allTests = [
-        ("testExample", testExample)
-    ]
+//    static var allTests = [
+//        ("testExample", testExample)
+//    ]
 }
