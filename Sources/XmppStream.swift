@@ -63,27 +63,48 @@ open class XmppStream {
         reader = XmppReader(socket: socket)
     }
     
-    open func connect(to host: String, port: Port = 5222) {
+    open func connect(to host: String? = nil, port: Port = 5222) {
         queue.async {
             assert(self.state == .disconnected)
+            let records = { () -> [XmppSrvResolver.Record] in
+                if let host = host {
+                    return [XmppSrvResolver.Record(priority: 0, weight: 0, port: port, target: host)]
+                } else {
+                    let fallback = XmppSrvResolver.Record(priority: .max, weight: 0, port: 5222, target: self.jid.domain)
+                    return (XmppSrvResolver.resolve(domain: self.jid.domain, timeout: 5) ?? []) + [fallback]
+                }
+            }().sorted { $0.priority == $1.priority ? $0.weight > $1.weight : $0.priority < $1.priority}
+        
             do {
                 self.socket = try XmppSocket(.inet, type: .stream, protocol: .tcp)
-                self.socket.delegate = self
-                try self.socket.connect(port: port, address: host)
                 
-                self.reader = XmppReader(socket: self.socket)
-                self.reader.delegate = self
-                self.reader.read() //start listening on incoming data, runs on a separate queue.
-                
-                self.state = .connected
-                self.delegate.invoke {
-                    $0.streamDidConnect(self)
+                for (i, r) in records.enumerated() {
+                    do {
+                        let address = try self.socket.addresses(for: r.target, port: r.port).first!
+                        try self.socket.connect(address: address)
+                        break
+                    } catch {
+                        if i == records.count - 1 {
+                            throw error //call didFailToConnect
+                        }
+                        //will try next result
+                    }
                 }
             } catch {
                 self.delegate.invoke {
                     $0.streamDidFailToConnect(self)
                 }
             }
+            
+            self.reader = XmppReader(socket: self.socket)
+            self.reader.delegate = self
+            self.reader.read() //start listening on incoming data, runs on a separate queue.
+            self.socket.delegate = self
+            self.state = .connected
+            self.delegate.invoke {
+                $0.streamDidConnect(self)
+            }
+            self.openNegotiation() //first time
         }
     }
     
