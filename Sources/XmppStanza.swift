@@ -12,8 +12,13 @@ public protocol RawStringRepresentable: RawRepresentable where RawValue == Strin
 
 open class XmppStanza<Type: RawStringRepresentable>: XmlElement {
     open class var stanza: String { return "" }
-    public convenience init(type: Type, from: XmppJID? = nil, to: XmppJID? = nil, id: String? = nil) {
+    
+    public convenience init() {
         self.init(name: Swift.type(of: self).stanza)
+    }
+    
+    public convenience init(type: Type, from: XmppJID? = nil, to: XmppJID? = nil, id: String? = nil) {
+        self.init()
         self.type = type
         self.from = from
         self.to = to
