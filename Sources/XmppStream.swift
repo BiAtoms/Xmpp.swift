@@ -312,7 +312,7 @@ extension XmppStream {
             do {
                 let bytes = string.bytes
                 try self.socket.write(bytes)
-                self.numberOfWrittenBytes += UInt64(bytes.count)
+                self.numberOfWrittenBytes += UInt64(bytes.count) // unreal on tls socket, see https://stackoverflow.com/q/1615882/5555803
                 completion(true)
             } catch {
                 completion(false)

@@ -27,7 +27,6 @@ extension XmppSrvResolver {
     }
     
     open static func resolve(srv: String, timeout: TimeInterval) -> [Record]? {
-        let srvName = srv.withCString { $0 }
         let `self` = XmppSrvResolver() //instance will hold `records`
     
         var dump = 0
@@ -38,7 +37,7 @@ extension XmppSrvResolver {
         guard DNSServiceQueryRecord(ref,
                                     DNSServiceFlags(0),
                                     UInt32(0),
-                                    srvName,
+                                    srv,
                                     UInt16(kDNSServiceType_SRV),
                                     UInt16(kDNSServiceClass_IN),
                                     queryRecordCallback,
@@ -93,7 +92,7 @@ extension XmppSrvResolver {
             let lastByteIndex = i + numberOfBytesToRead
             
             while i < lastByteIndex {
-                name += String(UnicodeScalar(ptr[i]))
+                name.append(Character(UnicodeScalar(ptr[i])))
                 i += 1
             }
             
