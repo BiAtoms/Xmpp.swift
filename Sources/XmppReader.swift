@@ -14,37 +14,48 @@ public protocol XmppReaderDelegate: class {
 }
 
 open class XmppReader {
-    open let xmlParser: XmlParser
     open let queue = DispatchQueue(label: "com.biatoms.xmpp-swift.reader")
+    private var stream: Stream
     open weak var delegate: XmppReaderDelegate?
     
     public init(stream: XmppReader.Stream) {
-        xmlParser = XmlParser(stream: stream)
-        xmlParser.delegate = self
+        self.stream = stream
     }
     
     public convenience init(socket: XmppSocket) {
         self.init(stream: XmppReader.Stream(socket: socket))
     }
     
+
+    private var xmlParser: XmlParser?
     func read() {
         queue.async {
-            // This method calls `XmppInputStream.read()` which calls `XmppSocket.read()` internally
-            // The `XmppSocket.read()` will block until disconnection (or timeout, if specified)
+            // We have to create new XmlParser. Otherwise, parser won't parse after an abort
+            let xmlParser = XmlParser(stream: self.stream)
+            xmlParser.delegate = self
+            self.xmlParser = xmlParser
+            
+            // This method calls `XmppInputStream.read()` which calls `XmppSocket.wait(.read)`
+            // then `XmppSocket.read()` internally.
 
-            // `XmppInputStream.read()` will return 0 when `XmppSocket.read()` throws.
-            // So that, the `XMLParser` will always fail with an error that stream is finished
-            // but the document is incomplete.
+            // `XmppInputStream.read()` will return 0 when `XmppSocket.wait()` or `XmppSocket.read()`
+            // throws. In other words, `XMLParser` will always fail with an error that byte stream is
+            // finished but the xml document tree is incomplete.
             
             // So, the return value will always be `false` and we ignore it.
             // Disconnection/timeout will reported by `XmppSocket`
-            _ = self.xmlParser.parse()
+            self.stream.stopReading = false
+            _ = xmlParser.parse()
         }
     }
     
     func abort() {
-        self.xmlParser.abortParsing()
+        stream.stopReading = true
+        xmlParser?.abortParsing()
+        xmlParser = nil
         openElements = 0
+        openStreamElements = 0
+        currentStreamElement = nil
     }
     
     //TODO: re-think this. it should be simple
@@ -87,18 +98,34 @@ extension XmppReader {
     open class Stream: InputStream {
         open let socket: XmppSocket
         open private(set) var numberOfReadBytes: UInt64 = 0
+        internal var stopReading = false
         
         public init(socket: XmppSocket) {
             self.socket = socket
             super.init(data: Data())
         }
         
+        
+        // Here is the deal. When we need to start tls handshake we must not call `socket.read()`.
+        // Therefore, we use `socket.wait()` to wait until data is available then check if we are
+        // allowed to read (through variable `stopReading`) then we call `socket.read()`. if we call
+        // `socket.read()` directly (without `socket.wait`)  it will read the tls handshake as well.
+        // So the `stopReading` variable is needed to prevent reading handshake bytes.
+
         override open func read(_ buffer: UnsafeMutablePointer<UInt8>, maxLength len: Int) -> Int {
-            let n = try? socket.read(buffer, bufferSize: len)
-            numberOfReadBytes += UInt64(n ?? 0)
-            //TODO: use a flag if document header is expected, then wipe it
-            wipeDocumentHeaderIfNeeded(buffer, len)
-            return n ?? -1
+            // We will wait until data is available to read, or error happens
+            // on error, `while let` loop will stop execution.
+            while let available = try? socket.wait(for: .read, timeout: 0.2), !stopReading {
+                guard available else { continue } // timeout happend, try again
+                
+                let n = try? socket.read(buffer, bufferSize: len)
+                numberOfReadBytes += UInt64(n ?? 0) //unreal on tls socket, see https://stackoverflow.com/q/1615882/5555803
+                //TODO: use a flag if document header is expected, then wipe it
+                wipeDocumentHeaderIfNeeded(buffer, n ?? 0)
+                return n ?? 0
+            }
+            
+            return 0
         }
         
         
@@ -108,6 +135,7 @@ extension XmppReader {
         // the parser error could not be prevented and once error happend, it means the socket
         // has alreay gave some portion (maybe all of) the buffered bytes which was part of the document
         // TODO: optimize/workaround this
+        // Maybe, we can abort parsing and restart it when there is possibility of having doc header
         
         func wipeDocumentHeaderIfNeeded(_ buffer: UnsafeMutablePointer<UInt8>, _ len: Int) {
             let data = Data(bytesNoCopy: buffer, count: len, deallocator: .none)

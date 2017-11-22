@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SocketSwift
 
 public protocol XmppStreamDelegate {
     func streamDidConnect(_ stream: XmppStream)
@@ -46,6 +47,7 @@ open class XmppStream {
     open private(set) var features: XmppFeatures? //holds <stream:stream> as well. It's parent
     open private(set) var state: State = .disconnected
     open private(set) var isAuthenticated = false
+    open var isTlsPreffered = true
     open private(set) var numberOfWrittenBytes: UInt64 = 0
     open var shouldReopenNegotiation = true
     open var authenticator: XmppAuthenticator = XmppPlainAuthenticator()
@@ -143,6 +145,25 @@ open class XmppStream {
 
 extension XmppStream: XmppReaderDelegate {
     public func reader(_ reader: XmppReader, didRead element: XmlElement) {
+        if state == .startingTls {
+            assert(element.name == "proceed") //server must respond with proceed
+            
+            queue.async {
+                self.reader.abort() //don't read tls handshake
+                do {
+                    try self.socket.startTls(SSL.Configuration(peer: self.jid.domain))
+                } catch {
+                    //TODO: disconnect
+                    print("socket.startTls failed", error)
+                }
+                self.reader.read() //continue reading with secure connection
+                self.state = .connected
+                self.openNegotiation() //restart stream
+            }
+            
+            return
+        }
+        
         if state == .authenticating {
             assert(isAuthenticated == false)
             assert(features!.supportsAuthenticator(authenticator) == true)
@@ -224,7 +245,12 @@ extension XmppStream: XmppReaderDelegate {
         case "stream:features":
             assert(state == .negotiating)
             features = XmppFeatures(element)
-            state = .connected
+            if features!.requiresTls  || (features!.supportsTls && isTlsPreffered) {
+                state = .startingTls
+                send(element: XmlElement(name:"starttls", xmlns: "urn:ietf:params:xml:ns:xmpp-tls"))
+            } else {
+                state = .connected
+            }
         case "stream:error":
             print("didReceiveError")
         case "stream:stream":
@@ -318,6 +344,7 @@ extension XmppStream {
         
         static let disconnected = State(rawValue: 0)
         static let negotiating = State(rawValue: 10)
+        static let startingTls = State(rawValue: 15)
         static let authenticating = State(rawValue: 20)
         static let binding = State(rawValue: 30)
         static let connected = State(rawValue: 100)

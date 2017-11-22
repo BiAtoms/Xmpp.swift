@@ -11,7 +11,7 @@ import Foundation
 open class XmppFeatures: XmlElement {
     
     open func supportsMechanism(_ mechanism: String) -> Bool {
-        guard let mechanisms = self.element(named: "mechanisms", xmlns: "urn:ietf:params:xml:ns:xmpp-sasl") else {
+        guard let mechanisms = element(named: "mechanisms", xmlns: "urn:ietf:params:xml:ns:xmpp-sasl") else {
             return false
         }
         return mechanisms.element(named: "mechanism", text: mechanism) != nil
@@ -22,6 +22,15 @@ open class XmppFeatures: XmlElement {
     }
     
     open var needsBinding: Bool {
-        return self.element(named: "bind", xmlns: "urn:ietf:params:xml:ns:xmpp-bind") != nil
+        return element(named: "bind", xmlns: "urn:ietf:params:xml:ns:xmpp-bind") != nil
+    }
+    
+    open var supportsTls: Bool {
+        return  element(named: "starttls", xmlns: "urn:ietf:params:xml:ns:xmpp-tls") != nil
+    }
+    
+    open var requiresTls: Bool {
+        return element(named: "starttls", xmlns: "urn:ietf:params:xml:ns:xmpp-tls")?
+            .element(named: "required") != nil
     }
 }
