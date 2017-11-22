@@ -49,7 +49,6 @@ open class XmppStream {
     open private(set) var isAuthenticated = false
     open var isTlsPreffered = true
     open private(set) var numberOfWrittenBytes: UInt64 = 0
-    open var shouldReopenNegotiation = true
     open var authenticator: XmppAuthenticator = XmppPlainAuthenticator()
     open var binder: XmppBinder = XmppDefaultBinder()
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
@@ -179,9 +178,7 @@ extension XmppStream: XmppReaderDelegate {
                     $0.streamDidAuthenticate(self)
                 }
                 
-                if shouldReopenNegotiation {
-                    openNegotiation() //calling second time
-                }
+                openNegotiation()
             case .error:
                 delegate.invoke {
                     $0.stream(self, didFailToAuthenticate: element)
