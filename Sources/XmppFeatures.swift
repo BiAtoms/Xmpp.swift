@@ -11,10 +11,8 @@ import Foundation
 open class XmppFeatures: XmlElement {
     
     open func supportsMechanism(_ mechanism: String) -> Bool {
-        guard let mechanisms = element(named: "mechanisms", xmlns: "urn:ietf:params:xml:ns:xmpp-sasl") else {
-            return false
-        }
-        return mechanisms.element(named: "mechanism", text: mechanism) != nil
+        return element(named: "mechanisms", xmlns: "urn:ietf:params:xml:ns:xmpp-sasl")?
+            .element(named: "mechanism", text: mechanism) != nil
     }
     
     open func supportsAuthenticator(_ authenticator: XmppAuthenticator) -> Bool {
