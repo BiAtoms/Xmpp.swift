@@ -20,6 +20,7 @@
 		9DB6E4011FA3E77E00F48512 /* XmppFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6E4001FA3E77E00F48512 /* XmppFeatures.swift */; };
 		9DB6E4031FA3EB6A00F48512 /* XmppBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6E4021FA3EB6A00F48512 /* XmppBinder.swift */; };
 		9DB6E4051FA3EBCE00F48512 /* XmppDefaultBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6E4041FA3EBCE00F48512 /* XmppDefaultBinder.swift */; };
+		9DB93C351FC72AD6003B06F8 /* XmppStreamDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB93C341FC72AD6003B06F8 /* XmppStreamDelegate.swift */; };
 		9DBC48591F9B877D0074093C /* XmppSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DBC48571F9B877D0074093C /* XmppSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9DBC48661F9B8C070074093C /* XmppSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC48651F9B8C070074093C /* XmppSwiftTests.swift */; };
 		9DBC486F1F9BABC80074093C /* XmppStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBC486E1F9BABC80074093C /* XmppStream.swift */; };
@@ -57,6 +58,7 @@
 		9DB6E4001FA3E77E00F48512 /* XmppFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppFeatures.swift; sourceTree = "<group>"; };
 		9DB6E4021FA3EB6A00F48512 /* XmppBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppBinder.swift; sourceTree = "<group>"; };
 		9DB6E4041FA3EBCE00F48512 /* XmppDefaultBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppDefaultBinder.swift; sourceTree = "<group>"; };
+		9DB93C341FC72AD6003B06F8 /* XmppStreamDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppStreamDelegate.swift; sourceTree = "<group>"; };
 		9DBC48541F9B877D0074093C /* XmppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XmppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DBC48571F9B877D0074093C /* XmppSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XmppSwift.h; sourceTree = "<group>"; };
 		9DBC48581F9B877D0074093C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				9DBC48571F9B877D0074093C /* XmppSwift.h */,
 				9DBC48581F9B877D0074093C /* Info.plist */,
 				9DBC486E1F9BABC80074093C /* XmppStream.swift */,
+				9DB93C341FC72AD6003B06F8 /* XmppStreamDelegate.swift */,
 				9DAA7CEA1FA5CAEE00B12978 /* XmppSocket.swift */,
 				9DAAB70B1FB4B0FE00D99304 /* XmppSrvResolver.swift */,
 				9D1F63F51F9E52EC009C0983 /* XmppReader.swift */,
@@ -383,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DA249611FA4EA58006455EC /* XmppStanza.swift in Sources */,
+				9DB93C351FC72AD6003B06F8 /* XmppStreamDelegate.swift in Sources */,
 				9DB6E4051FA3EBCE00F48512 /* XmppDefaultBinder.swift in Sources */,
 				9DBC48711F9BADCB0074093C /* XmppJID.swift in Sources */,
 				9DBC486F1F9BABC80074093C /* XmppStream.swift in Sources */,
