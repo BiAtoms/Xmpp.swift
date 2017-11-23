@@ -21,10 +21,6 @@ open class XmppFeatures: XmlElement {
         return supportsMechanism(authenticator.mechanism)
     }
     
-    open var needsBinding: Bool {
-        return element(named: "bind", xmlns: "urn:ietf:params:xml:ns:xmpp-bind") != nil
-    }
-    
     open var supportsTls: Bool {
         return  element(named: "starttls", xmlns: "urn:ietf:params:xml:ns:xmpp-tls") != nil
     }

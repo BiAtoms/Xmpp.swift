@@ -188,21 +188,15 @@ extension XmppStream: XmppReaderDelegate {
             return
         }
         
-        if isAuthenticated && element.name == "stream:features" { //we just successfully logged in. try to bind and start session if needed
+        if isAuthenticated && element.name == "stream:features" {
             assert(state == .negotiating)
             assert(self.features != nil) //this should not be nil either
             
             //TODO should we call delegate.didReceive features???
             self.features = XmppFeatures(element)
             
-            let features = self.features!
-            
-            if features.needsBinding {
-                state = .binding
-                send(element: binder.start(jid: jid))
-            } else {
-                state = .connected
-            }
+            state = .binding
+            send(element: binder.start(jid: jid))
             return
         }
         
