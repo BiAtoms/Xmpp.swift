@@ -37,6 +37,8 @@ open class XmppStream {
     open func connect(to host: String? = nil, port: Port = 5222) {
         queue.async {
             assert(self.state == .disconnected)
+            self.features = nil
+            self.isAuthenticated = false
             let records = { () -> [XmppSrvResolver.Record] in
                 if let host = host {
                     return [XmppSrvResolver.Record(priority: 0, weight: 0, port: port, target: host)]
@@ -110,6 +112,14 @@ open class XmppStream {
         state = .authenticating
         send(element: authenticator.start(jid: jid, password: password))
     }
+    
+    open func disconnect() {
+        state = .disconnected
+        delegate.invoke {
+            $0.streamDidDisconnect(self)
+        }
+
+    }
 }
 
 extension XmppStream: XmppReaderDelegate {
@@ -120,7 +130,7 @@ extension XmppStream: XmppReaderDelegate {
             queue.async {
                 self.reader.abort() //don't read tls handshake
                 do {
-                    try self.socket.startTls(SSL.Configuration(peer: self.jid.domain))
+                    try self.socket.startTls(TLS.Configuration(peer: self.jid.domain))
                 } catch {
                     //TODO: disconnect
                     print("socket.startTls failed", error)
@@ -177,7 +187,7 @@ extension XmppStream: XmppReaderDelegate {
                 state = .connected
             case .error:
 //                print("binding failed with element:", element)
-                state = .connected
+                disconnect()
                 break
             case .continue(let element):
                 send(element: element)
@@ -287,14 +297,10 @@ extension XmppStream {
 
 extension XmppStream: XmppSocketDelegate {
     public func socket(_ socket: XmppSocket, didDisconnect error: Error?) {
-        //TODO: clean & call delegates
-        //TODO: in which queue is this called???
         guard state != .disconnected else { return }
-        
-        delegate.invoke {
-            $0.streamDidDisconnect(self)
-        }
-        state = .disconnected
+        // Calling `disconnect()` may result in calling this method (`didDisconnect`)
+        // but since we have `guard` above, we won't call `disconnect()` again
+        disconnect()
     }
 }
 
