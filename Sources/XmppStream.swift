@@ -149,11 +149,6 @@ extension XmppStream: XmppReaderDelegate {
             case .success:
                 state = .connected
                 isAuthenticated = true
-                
-                delegate.invoke {
-                    $0.streamDidAuthenticate(self)
-                }
-                
                 openNegotiation()
             case .error:
                 delegate.invoke {
@@ -167,8 +162,12 @@ extension XmppStream: XmppReaderDelegate {
         if state == .binding {
             switch binder.handleResponse(element) {
             case .success:
-//                print("Bound successfully with element:", element)
                 state = .connected
+                
+                // binding happens just after auth, so everything is finished for auth process
+                delegate.invoke {
+                    $0.streamDidAuthenticate(self)
+                }
             case .error:
 //                print("binding failed with element:", element)
                 disconnect()
