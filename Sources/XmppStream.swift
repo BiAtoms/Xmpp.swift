@@ -73,9 +73,6 @@ open class XmppStream {
             self.reader.read() //start listening on incoming data, runs on a separate queue.
             self.socket.delegate = self
             self.state = .connected
-            self.delegate.invoke {
-                $0.streamDidConnect(self)
-            }
             self.openNegotiation() //first time
         }
     }
@@ -215,11 +212,17 @@ extension XmppStream: XmppReaderDelegate {
         case "stream:features":
             assert(state == .negotiating)
             features = XmppFeatures(element)
-            if features!.requiresTls  || (features!.supportsTls && isTlsPreffered) {
+            if features!.requiresTls || (features!.supportsTls && isTlsPreffered) {
                 state = .startingTls
                 send(element: XmlElement(name:"starttls", xmlns: "urn:ietf:params:xml:ns:xmpp-tls"))
             } else {
                 state = .connected
+                
+                // connected to the server, started tls if needed, received final features
+                // so stream are ready for use
+                delegate.invoke {
+                    $0.streamDidConnect(self)
+                }
             }
         case "stream:error":
             print("didReceiveError")
