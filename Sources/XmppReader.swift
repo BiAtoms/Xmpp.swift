@@ -117,7 +117,7 @@ extension XmppReader {
             while let available = try? socket.wait(for: .read, timeout: 0.2), !stopReading {
                 guard available else { continue } // timeout happend, try again
                 
-                let n = try? socket.read(buffer, bufferSize: len)
+                let n = try? socket.read(buffer, size: len)
                 //TODO: use a flag if document header is expected, then wipe it
                 wipeDocumentHeaderIfNeeded(buffer, n ?? 0)
                 return n ?? 0

@@ -17,8 +17,8 @@ open class XmppSocket: Socket {
     
     open weak var delegate: XmppSocketDelegate?
     
-    open override func read(_ buffer: UnsafeMutableRawPointer, bufferSize: Int) throws -> Int {
-        return try checkingDisconnection { try super.read(buffer, bufferSize: bufferSize) }
+    open override func read(_ buffer: UnsafeMutableRawPointer, size bufferSize: Int) throws -> Int {
+        return try checkingDisconnection { try super.read(buffer, size: bufferSize) }
     }
     
     open override func write(_ buffer: UnsafeRawPointer, length: Int) throws {
