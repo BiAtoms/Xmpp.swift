@@ -164,18 +164,6 @@ extension XmppStream: XmppReaderDelegate {
             return
         }
         
-        if isAuthenticated && element.name == "stream:features" {
-            assert(state == .negotiating)
-            assert(self.features != nil) //this should not be nil either
-            
-            //TODO should we call delegate.didReceive features???
-            self.features = XmppFeatures(element)
-            
-            state = .binding
-            send(element: binder.start(jid: jid))
-            return
-        }
-        
         if state == .binding {
             switch binder.handleResponse(element) {
             case .success:
@@ -216,12 +204,18 @@ extension XmppStream: XmppReaderDelegate {
                 state = .startingTls
                 send(element: XmlElement(name:"starttls", xmlns: "urn:ietf:params:xml:ns:xmpp-tls"))
             } else {
-                state = .connected
-                
-                // connected to the server, started tls if needed, received final features
-                // so stream are ready for use
-                delegate.invoke {
-                    $0.streamDidConnect(self)
+                if isAuthenticated { // start binding
+                    state = .binding
+                    send(element: binder.start(jid: jid))
+                } else { // not yet authenticated, probably first connection
+                    state = .connected
+                    
+                    // connected to the server, started tls if needed, received final features
+                    // so stream are ready for use
+                    delegate.invoke {
+                        $0.streamDidConnect(self)
+                    }
+                    
                 }
             }
         case "stream:error":
