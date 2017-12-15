@@ -20,7 +20,7 @@ public protocol XmppStreamDelegate {
     func stream(_ stream: XmppStream, didReceive message: XmppMessage)
     func stream(_ stream: XmppStream, didReceive presence: XmppPresence)
     func stream(_ stream: XmppStream, didReceive iq: XmppIQ) -> Bool
-    func strean(_ stream: XmppStream, didReceive element: XmlElement)
+    func stream(_ stream: XmppStream, didReceive element: XmlElement)
     
     func stream(_ stream: XmppStream, didSend message: XmppMessage)
     func stream(_ stream: XmppStream, didSend presence: XmppPresence)

@@ -229,7 +229,7 @@ extension XmppStream: XmppReaderDelegate {
             break
         default:
             delegate.invoke {
-                $0.strean(self, didReceive: element)
+                $0.stream(self, didReceive: element)
             }
         }
     }
