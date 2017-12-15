@@ -97,7 +97,6 @@ extension XmppReader: XmlParserDelegate {
 extension XmppReader {
     open class Stream: InputStream {
         open let socket: XmppSocket
-        open private(set) var numberOfReadBytes: UInt64 = 0
         internal var stopReading = false
         
         public init(socket: XmppSocket) {
@@ -119,7 +118,6 @@ extension XmppReader {
                 guard available else { continue } // timeout happend, try again
                 
                 let n = try? socket.read(buffer, bufferSize: len)
-                numberOfReadBytes += UInt64(n ?? 0) //unreal on tls socket, see https://stackoverflow.com/q/1615882/5555803
                 //TODO: use a flag if document header is expected, then wipe it
                 wipeDocumentHeaderIfNeeded(buffer, n ?? 0)
                 return n ?? 0

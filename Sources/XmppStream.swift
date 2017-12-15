@@ -18,7 +18,6 @@ open class XmppStream {
     open private(set) var state: State = .disconnected
     open private(set) var isAuthenticated = false
     open var isTlsPreffered = true
-    open private(set) var numberOfWrittenBytes: UInt64 = 0
     open var authenticator: XmppAuthenticator = XmppPlainAuthenticator()
     open var binder: XmppBinder = XmppDefaultBinder()
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
@@ -286,7 +285,6 @@ extension XmppStream {
             do {
                 let bytes = string.bytes
                 try self.socket.write(bytes)
-                self.numberOfWrittenBytes += UInt64(bytes.count) // unreal on tls socket, see https://stackoverflow.com/q/1615882/5555803
                 completion(true)
             } catch {
                 completion(false)
