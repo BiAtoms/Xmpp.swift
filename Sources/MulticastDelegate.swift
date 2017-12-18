@@ -1,126 +1,76 @@
 //
 //  MulticastDelegate.swift
-//  MulticastDelegateDemo
+//  XmppSwift
 //
-//  Created by Joao Nunes on 28/12/15.
-//  Copyright © 2015 Joao Nunes. All rights reserved.
-//
-//  See https://github.com/jonasman/MulticastDelegate
-
-//  Modified by Orkhan Alikhanov.
+//  Created by Orkhan Alikhanov on 12/18/17.
 //  Copyright © 2017 BiAtoms. All rights reserved.
+//
 
 import Foundation
 
-/**
- *  `MulticastDelegate` lets you easily create a "multicast delegate" for a given protocol or class.
- */
+// Using `MulticastDelegate<T: MyProtocol>` and calling `MulticastDelegate<MyProtocol>()`
+// does not compile. Therefore we avoid it
+// See https://bugs.swift.org/browse/SR-55
+
 open class MulticastDelegate<T> {
+    internal var delegates = [WeakWrapper]()
     
-    /// The delegates hash table.
-    internal let delegates: NSHashTable<AnyObject>
+    public init() { }
     
-    /**
-     *  Use the property to check if no delegates are contained there.
-     *
-     *  - returns: `true` if there are no delegates at all, `false` if there is at least one.
-     */
-    public var isEmpty: Bool {
-        return delegates.count == 0
+    open func add(_ delegate: T, queue: DispatchQueue = .main) {
+        guard !contains(delegate) else { return }
+        delegates.append(WeakWrapper(value: delegate as AnyObject, queue: queue))
     }
     
-    /**
-     *  Use this method to initialize a new `MulticastDelegate` specifying whether delegate references should be weak or
-     *  strong.
-     *
-     *  - parameter strongReferences: Whether delegates should be strongly referenced, false by default.
-     *
-     *  - returns: A new `MulticastDelegate` instance
-     */
-    public init(strongReferences: Bool = false) {
-        
-        delegates = strongReferences ? NSHashTable<AnyObject>() : NSHashTable<AnyObject>.weakObjects()
+    open func remove(_ delegate: T) {
+        once(delegate) { delegates.remove(at: $0) }
     }
     
-    /**
-     *  Use this method to initialize a new `MulticastDelegate` specifying the storage options yourself.
-     *
-     *  - parameter options: The underlying storage options to use
-     *
-     *  - returns: A new `MulticastDelegate` instance
-     */
-    public init(options: NSPointerFunctions.Options) {
-        delegates = NSHashTable(options: options, capacity: 0)
+    open func contains(_ delegate: T) -> Bool {
+        var result = false
+        once(delegate) { _ in result = true }
+        return result
     }
     
-    /**
-     *  Use this method to add a delelgate.
-     *
-     *  Alternatively, you can use the `+=` operator to add a delegate.
-     *
-     *  - parameter delegate:  The delegate to be added.
-     */
-    public func add(_ delegate: T) {
-        delegates.add(delegate as AnyObject)
-    }
-    
-    /**
-     *  Use this method to remove a previously-added delegate.
-     *
-     *  Alternatively, you can use the `-=` operator to add a delegate.
-     *
-     *  - parameter delegate:  The delegate to be removed.
-     */
-    public func remove(_ delegate: T) {
-        delegates.remove(delegate as AnyObject)
-    }
-    
-    /**
-     *  Use this method to invoke a closure on each delegate.
-     *
-     *  - parameter block: The closure to be invoked on each delegate.
-     */
-    public func invoke(_ block: (T) -> ()) {
-        
-        for delegate in delegates.allObjects {
-            block(delegate as! T)
+    open func invoke(_ block: @escaping (T) -> ()) {
+        walking { delegate, queue, _ in
+            queue.async {
+                block(delegate as! T)
+            }
         }
     }
     
-    /**
-     *  Use this method to determine if the multicast delegate contains a given delegate.
-     *
-     *  - parameter delegate:   The given delegate to check if it's contained
-     *
-     *  - returns: `true` if the delegate is found or `false` otherwise
-     */
-    public func contains(_ delegate: T) -> Bool {
-        return delegates.contains(delegate as AnyObject)
+    internal class WeakWrapper {
+        weak var value: AnyObject?
+        var queue: DispatchQueue
+        
+        init(value: AnyObject, queue: DispatchQueue) {
+            self.value = value
+            self.queue = queue
+        }
     }
 }
 
-/**
- *  Use this operator to add a delegate.
- *
- *  This is a convenience operator for calling `addDelegate`.
- *
- *  - parameter left:   The multicast delegate
- *  - parameter right:  The delegate to be added
- */
-public func +=<T>(left: MulticastDelegate<T>, right: T) {
-    
-    left.add(right)
-}
 
-/**
- *  Use this operator to remove a delegate.
- *
- *  This is a convenience operator for calling `removeDelegate`.
- *
- *  - parameter left:   The multicast delegate
- *  - parameter right:  The delegate to be removed
- */
-public func -=<T>(left: MulticastDelegate<T>, right: T) {
+extension MulticastDelegate {
+    private func once(_ delegate: T, _ block: (Int) -> Void) {
+        walking { value, _, idx in
+            if value === delegate as AnyObject {
+                block(idx)
+                idx = delegates.count // break loop
+            }
+        }
+    }
     
-    left.remove(right)
+    internal func walking(_ block: (AnyObject, DispatchQueue, inout Int) -> Void) {
+        var i = 0
+        while i < delegates.count {
+            if let d = delegates[i].value {
+                block(d, delegates[i].queue, &i)
+                i += 1
+            } else {
+                delegates.remove(at: i)
+            }
+        }
+    }
 }
