@@ -131,9 +131,9 @@ extension XmppReader {
         // causes error on parser. we replace the header with ignored whitespace (e.x " ")
         //
         // the parser error could not be prevented and once error happend, it means the socket
-        // has alreay gave some portion (maybe all of) the buffered bytes which was part of the document
+        // has alreay gave some portion (maybe all) of the buffered bytes which was the part of the document
         // TODO: optimize/workaround this
-        // Maybe, we can abort parsing and restart it when there is possibility of having doc header
+        // Maybe, we can abort parsing and restart it when there is possibility of having doc header?
         
         func wipeDocumentHeaderIfNeeded(_ buffer: UnsafeMutablePointer<UInt8>, _ len: Int) {
             let data = Data(bytesNoCopy: buffer, count: len, deallocator: .none)
@@ -141,41 +141,15 @@ extension XmppReader {
             if let r = s.range(of: "\\<\\?xml .*\\?\\>", options: .regularExpression, range: nil, locale: nil) {
                 let b = UnsafeMutableBufferPointer(start: buffer, count: len)
                 for i in r.lowerBound.encodedOffset..<r.upperBound.encodedOffset {
-                    b[i] = 32 //" "
+                    b[i] = 32 // the ascii code for space character (" ") is 32
                 }
             }
         }
         
-        override open var hasBytesAvailable: Bool {
-            fatalError("Should not be called")
-        }
-        
-        open override func open() {
-            //opened
-        }
-        
-        open override func close() {
-            //closed
-        }
-        
-        open override func schedule(in aRunLoop: RunLoop, forMode mode: RunLoopMode) {
-            fatalError("Should not reach here")
-        }
-        
-        open override func remove(from aRunLoop: RunLoop, forMode mode: RunLoopMode) {
-            fatalError("Should not reach here")
-        }
-        
-        
-        open override var streamStatus: Stream.Status {
-            fatalError("Should not reach here")
-        }
-        
-        open override var streamError: Error?  {
-            fatalError("Should not reach here")
-        }
-        override open func getBuffer(_ buffer: UnsafeMutablePointer<UnsafeMutablePointer<UInt8>?>, length len: UnsafeMutablePointer<Int>) -> Bool {
-            fatalError("Should not reach here")
-        }
+
+        // We have to override open/close and not call super.
+        // Otherwise, fatal error occurs indicating they must be overriden
+        open override func open() { }
+        open override func close() { }
     }
 }
