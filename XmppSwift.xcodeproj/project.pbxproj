@@ -96,6 +96,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9D57E9DF1FEAAFBA00903061 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				9DBC486E1F9BABC80074093C /* XmppStream.swift */,
+				9DB93C341FC72AD6003B06F8 /* XmppStreamDelegate.swift */,
+				9DAA7CEA1FA5CAEE00B12978 /* XmppSocket.swift */,
+				9DAAB70B1FB4B0FE00D99304 /* XmppSrvResolver.swift */,
+				9D1F63F51F9E52EC009C0983 /* XmppReader.swift */,
+				9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */,
+				9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */,
+				9DC07B111FA114F600A59542 /* XmppPresence.swift */,
+				9DA249601FA4EA58006455EC /* XmppStanza.swift */,
+				9DB6E4001FA3E77E00F48512 /* XmppFeatures.swift */,
+				9DB6E4021FA3EB6A00F48512 /* XmppBinder.swift */,
+				9DB6E4041FA3EBCE00F48512 /* XmppDefaultBinder.swift */,
+				9D1F63EF1F9DD7F8009C0983 /* XmppAuthenticator.swift */,
+				9D1F63F11F9DDDFD009C0983 /* XmppPlainAuthenticator.swift */,
+				9D1F63F31F9DDE36009C0983 /* XmppAnonymusAuthenticator.swift */,
+				9DBC48701F9BADCB0074093C /* XmppJID.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		9DBC484A1F9B877D0074093C = {
 			isa = PBXGroup;
 			children = (
@@ -119,26 +142,11 @@
 		9DBC48561F9B877D0074093C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				9DBC48571F9B877D0074093C /* XmppSwift.h */,
-				9DBC48581F9B877D0074093C /* Info.plist */,
-				9DBC486E1F9BABC80074093C /* XmppStream.swift */,
-				9DB93C341FC72AD6003B06F8 /* XmppStreamDelegate.swift */,
-				9DAA7CEA1FA5CAEE00B12978 /* XmppSocket.swift */,
-				9DAAB70B1FB4B0FE00D99304 /* XmppSrvResolver.swift */,
-				9D1F63F51F9E52EC009C0983 /* XmppReader.swift */,
-				9DC07B0D1FA1145E00A59542 /* XmppMessage.swift */,
-				9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */,
-				9DC07B111FA114F600A59542 /* XmppPresence.swift */,
-				9DA249601FA4EA58006455EC /* XmppStanza.swift */,
-				9DB6E4001FA3E77E00F48512 /* XmppFeatures.swift */,
-				9DB6E4021FA3EB6A00F48512 /* XmppBinder.swift */,
-				9DB6E4041FA3EBCE00F48512 /* XmppDefaultBinder.swift */,
-				9D1F63EF1F9DD7F8009C0983 /* XmppAuthenticator.swift */,
-				9D1F63F11F9DDDFD009C0983 /* XmppPlainAuthenticator.swift */,
-				9D1F63F31F9DDE36009C0983 /* XmppAnonymusAuthenticator.swift */,
-				9DBC48701F9BADCB0074093C /* XmppJID.swift */,
+				9D57E9DF1FEAAFBA00903061 /* Core */,
 				9DC07B151FA12EE600A59542 /* Helpers.swift */,
 				9DB6E3FE1FA266C600F48512 /* MulticastDelegate.swift */,
+				9DBC48571F9B877D0074093C /* XmppSwift.h */,
+				9DBC48581F9B877D0074093C /* Info.plist */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
