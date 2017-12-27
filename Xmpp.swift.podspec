@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = '8.0'
     s.osx.deployment_target = '10.9'
     s.tvos.deployment_target = '9.0'
-    s.source_files = 'Sources/*.swift'
+    s.source_files = 'Sources/**/*.swift'
     s.dependency 'Socket.swift', '~> 2.0'
     s.dependency 'Xml.swift', '~> 1.0'
 end
