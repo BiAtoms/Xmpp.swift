@@ -30,7 +30,7 @@ extension String {
 }
 
 extension XmlElement {
-    func element(named name: String, xmlns: String? = nil, text: String? = nil) -> XmlElement? {
+    open func element(named name: String, xmlns: String? = nil, text: String? = nil) -> XmlElement? {
         return self.children.first {
             $0.name == name &&
             (xmlns == nil || $0.attributes["xmlns"] == xmlns) &&
@@ -38,7 +38,7 @@ extension XmlElement {
         }
     }
     
-    convenience init(_ other: XmlElement) {
+    public convenience init(_ other: XmlElement) {
         self.init(name: other.name)
         self.attributes = other.attributes
         self.children = other.children
