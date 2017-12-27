@@ -27,11 +27,11 @@ extension XmppJID {
             else { return nil }
         
         let l = string.components(separatedBy: "@")
+        guard l.count == 2, !l[0].isEmpty else { return nil }
+        
         let s = l.last?.components(separatedBy: "/")
-        guard let user = l.first,
-            let domain = s?.first else {
-                return nil
-        }
+        let user = l.first!
+        let domain = s!.first!
         let resource = s?.last
         
         //TODO: what is "string prep"?
