@@ -10,10 +10,9 @@ import Foundation
 import SocketSwift
 
 open class XmppStream {
-    open let jid: XmppJID
-    
-    open private(set) var socket: XmppSocket
-    open private(set) var reader: XmppReader
+    open private(set) var jid: XmppJID!
+    open private(set) var socket: XmppSocket!
+    open private(set) var reader: XmppReader!
     open private(set) var features: XmppFeatures? //holds <stream:stream> as well. It's parent
     open private(set) var state: State = .disconnected
     open private(set) var isAuthenticated = false
@@ -25,17 +24,12 @@ open class XmppStream {
     /// A serial queue for connect/send.
     open let queue = DispatchQueue(label: "com.biatoms.xmpp-swift.writer")
     
-    public init(jid: XmppJID) {
-        self.jid = jid
-        
-        //dump
-        socket = XmppSocket(with: 0)
-        reader = XmppReader(socket: socket)
-    }
+    public init() {}
     
-    open func connect(to host: String? = nil, port: Port = 5222) {
+    open func connect(with jid: XmppJID, to host: String? = nil, port: Port = 5222) {
         queue.async {
             assert(self.state == .disconnected)
+            self.jid = jid
             self.features = nil
             self.isAuthenticated = false
             let records = { () -> [XmppSrvResolver.Record] in
