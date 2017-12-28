@@ -50,7 +50,8 @@ extension XmlElement {
 extension MulticastDelegate {
     public func invokeAndStopIf<R: Equatable>(_ value: R,_ invocation: (T) -> R) -> Bool {
         for delegate in delegates {
-            if invocation(delegate as! T) == value {
+            guard let v = delegate.value as? T else { continue }
+            if invocation(v) == value {
                 return true //stopped
             }
         }
