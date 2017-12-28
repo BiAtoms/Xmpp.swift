@@ -12,12 +12,9 @@ open class XmppIQ: XmppStanza<XmppIQType> {
     override open class var stanza: String { return "iq" }
 }
 
-public struct XmppIQType: RawStringRepresentable {
-    public let rawValue: String
-    public init(rawValue: String) { self.rawValue = rawValue }
-    
-    static let set = XmppIQType(rawValue: "set")
-    static let get = XmppIQType(rawValue: "get")
-    static let result = XmppIQType(rawValue: "result")
-    static let error = XmppIQType(rawValue: "error")
+public enum XmppIQType: String, RawStringRepresentable {
+    case set
+    case get
+    case result
+    case error
 }
