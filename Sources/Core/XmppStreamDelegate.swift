@@ -32,3 +32,41 @@ public protocol XmppStreamDelegate {
     func stream(_ stream: XmppStream, didFailToSend iq: XmppIQ)
     func stream(_ stream: XmppStream, didFailToSend element: XmlElement)
 }
+
+extension XmppStreamDelegate {
+    public func streamDidConnect(_ stream: XmppStream) { }
+    public func streamDidDisconnect(_ stream: XmppStream) { }
+    public func streamDidFailToConnect(_ stream: XmppStream) { }
+    
+    public func streamDidStartNegotiation(_ stream: XmppStream) { }
+    
+    public func streamDidFailToStartNegotiation(_ stream: XmppStream) { }
+    
+    public func streamDidAuthenticate(_ stream: XmppStream) { }
+    
+    public func stream(_ stream: XmppStream, didFailToAuthenticate element: XmlElement) { }
+    
+    public func stream(_ stream: XmppStream, didReceive message: XmppMessage) { }
+    
+    public func stream(_ stream: XmppStream, didReceive presence: XmppPresence) { }
+    
+    public func stream(_ stream: XmppStream, didReceive iq: XmppIQ) -> Bool { return false }
+    
+    public func stream(_ stream: XmppStream, didReceive element: XmlElement) { }
+    
+    public func stream(_ stream: XmppStream, didSend message: XmppMessage) { }
+    
+    public func stream(_ stream: XmppStream, didSend presence: XmppPresence) { }
+    
+    public func stream(_ stream: XmppStream, didSend iq: XmppIQ) { }
+    
+    public func stream(_ stream: XmppStream, didSend element: XmlElement) { }
+    
+    public func stream(_ stream: XmppStream, didFailToSend message: XmppMessage) { }
+    
+    public func stream(_ stream: XmppStream, didFailToSend presence: XmppPresence) { }
+    
+    public func stream(_ stream: XmppStream, didFailToSend iq: XmppIQ) { }
+    
+    public func stream(_ stream: XmppStream, didFailToSend element: XmlElement) { }
+}
