@@ -29,6 +29,7 @@
 		9DC07B101FA1149C00A59542 /* XmppIQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */; };
 		9DC07B121FA114F600A59542 /* XmppPresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B111FA114F600A59542 /* XmppPresence.swift */; };
 		9DC07B161FA12EE600A59542 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC07B151FA12EE600A59542 /* Helpers.swift */; };
+		9DF6A7EA1FF54350007A361C /* XmppContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6A7E81FF5434E007A361C /* XmppContact.swift */; };
 		BCA2BA25AFE59F5775718929 /* Pods_XmppSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 676D634A573D008BD4FF81B8 /* Pods_XmppSwiftTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		9DC07B0F1FA1149C00A59542 /* XmppIQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppIQ.swift; sourceTree = "<group>"; };
 		9DC07B111FA114F600A59542 /* XmppPresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmppPresence.swift; sourceTree = "<group>"; };
 		9DC07B151FA12EE600A59542 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		9DF6A7E81FF5434E007A361C /* XmppContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XmppContact.swift; sourceTree = "<group>"; };
 		B0BBEE104DC5B89D96E4FD38 /* Pods_XmppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XmppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7594283A1C33602784DF0E9 /* Pods-XmppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XmppSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XmppSwift/Pods-XmppSwift.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				9D57E9DF1FEAAFBA00903061 /* Core */,
+				9DF6A7E71FF5434E007A361C /* Roster */,
 				9DC07B151FA12EE600A59542 /* Helpers.swift */,
 				9DB6E3FE1FA266C600F48512 /* MulticastDelegate.swift */,
 				9DBC48571F9B877D0074093C /* XmppSwift.h */,
@@ -166,6 +169,14 @@
 				9DBC48651F9B8C070074093C /* XmppSwiftTests.swift */,
 			);
 			path = XmppSwiftTests;
+			sourceTree = "<group>";
+		};
+		9DF6A7E71FF5434E007A361C /* Roster */ = {
+			isa = PBXGroup;
+			children = (
+				9DF6A7E81FF5434E007A361C /* XmppContact.swift */,
+			);
+			path = Roster;
 			sourceTree = "<group>";
 		};
 		D44F072205DDB0FD7E35FEC7 /* Frameworks */ = {
@@ -409,6 +420,7 @@
 				9DB6E3FF1FA266C600F48512 /* MulticastDelegate.swift in Sources */,
 				9DC07B121FA114F600A59542 /* XmppPresence.swift in Sources */,
 				9DC07B0E1FA1145F00A59542 /* XmppMessage.swift in Sources */,
+				9DF6A7EA1FF54350007A361C /* XmppContact.swift in Sources */,
 				9D1F63F61F9E52EC009C0983 /* XmppReader.swift in Sources */,
 				9DC07B161FA12EE600A59542 /* Helpers.swift in Sources */,
 			);
