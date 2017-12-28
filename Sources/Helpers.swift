@@ -69,3 +69,35 @@ func bridge<T : AnyObject>(ptr : UnsafeRawPointer) -> T {
     return Unmanaged<T>.fromOpaque(ptr).takeUnretainedValue()
 }
 
+
+open class IdHolder {
+    open var ids: Set<String> = []
+    open func contains(_ id: String?) -> Bool {
+        guard let id = id else { return false }
+        return ids.contains(id)
+    }
+    
+    open func has(_ id: String?) -> Bool {
+        if contains(id) {
+            remove(id!)
+            return true
+        }
+        
+        return false
+    }
+    
+    open func add(_ id: String) {
+        let (inserted, _) = ids.insert(id)
+        assert(inserted)
+    }
+    open func remove(_ id: String) {
+        ids.remove(id)
+    }
+    
+    open var newId: String {
+        let id = UUID().uuidString
+        add(id)
+        return id
+    }
+}
+
