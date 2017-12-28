@@ -17,7 +17,7 @@ public protocol XmppAuthenticator {
 extension XmppAuthenticator {
     public var authElement: XmlElement {
         let auth = XmlElement(name: "auth", xmlns: "urn:ietf:params:xml:ns:xmpp-sasl")
-        auth.attributes["mechanism"] = mechanism
+        auth["mechanism"] = mechanism
         return auth
     }
 }

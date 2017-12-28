@@ -15,15 +15,15 @@ open class XmppContact {
     
     init(item: XmlElement) {
         assert(item.name == "item")
-        jid = XmppJID(parsing: item.attributes["jid"])!
-        name = item.attributes["name"] ?? ""
-        subscription = Subscription(rawValue: item.attributes["subscription"] ?? "none")!
+        jid = XmppJID(parsing: item["jid"])!
+        name = item["name"] ?? ""
+        subscription = Subscription(rawValue: item["subscription"] ?? "none")!
         groups = item.children.map {
             assert($0.name == "group")
             return $0.text
         }
-        isPendingApproval = item.attributes["ask"] != nil
-        assert(!isPendingApproval || item.attributes["ask"] == "subscribe")
+        isPendingApproval = item["ask"] != nil
+        assert(!isPendingApproval || item["ask"] == "subscribe")
     }
     
     enum Subscription: String {

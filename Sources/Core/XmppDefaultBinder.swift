@@ -22,7 +22,7 @@ open class XmppDefaultBinder: XmppBinder {
     }
     
     public func handleResponse(_ element: XmlElement) -> XmppBinderResult {
-        assert(element.attributes["id"] == "session-bind")
+        assert(element["id"] == "session-bind")
         guard let bind = element.element(named: "bind", xmlns: "urn:ietf:params:xml:ns:xmpp-bind") else {
             return .error
         }

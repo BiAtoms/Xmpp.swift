@@ -33,7 +33,7 @@ extension XmlElement {
     open func element(named name: String, xmlns: String? = nil, text: String? = nil) -> XmlElement? {
         return self.children.first {
             $0.name == name &&
-            (xmlns == nil || $0.attributes["xmlns"] == xmlns) &&
+            (xmlns == nil || $0["xmlns"] == xmlns) &&
             (text == nil || $0.text == text)
         }
     }
