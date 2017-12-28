@@ -18,4 +18,6 @@ public struct XmppIQType: RawStringRepresentable {
     
     static let set = XmppIQType(rawValue: "set")
     static let get = XmppIQType(rawValue: "get")
+    static let result = XmppIQType(rawValue: "result")
+    static let error = XmppIQType(rawValue: "error")
 }
