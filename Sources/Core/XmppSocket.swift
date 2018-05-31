@@ -25,6 +25,8 @@ open class XmppSocket: Socket {
         try checkingDisconnection { try super.write(buffer, length: length) }
     }
     
+    // TODO: disconnection is not noticed until read/write operation is performed
+    // Keep alive bytes (whitespaces) are ideal in this case
     private func checkingDisconnection<T>(_ block: () throws -> T) rethrows -> T {
         do {
             return try block()
