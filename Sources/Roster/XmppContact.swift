@@ -7,11 +7,11 @@
 //
 
 open class XmppContact {
-    var jid: XmppJID
-    var name: String
-    var subscription: Subscription
-    var groups: [String]
-    var isPendingApproval: Bool
+    open var jid: XmppJID
+    open var name: String
+    open var subscription: Subscription
+    open var groups: [String]
+    open var isPendingApproval: Bool
     
     init(item: XmlElement) {
         assert(item.name == "item")
@@ -26,7 +26,7 @@ open class XmppContact {
         assert(!isPendingApproval || item["ask"] == "subscribe")
     }
     
-    enum Subscription: String {
+    public enum Subscription: String {
         case none
         case to
         case from
