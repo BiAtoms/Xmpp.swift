@@ -17,7 +17,7 @@ open class XmppStream {
     open private(set) var state: State = .disconnected
     open private(set) var isAuthenticated = false
     open var isTlsPreffered = true
-    open var authenticator: XmppAuthenticator = XmppPlainAuthenticator()
+    open private(set) var authenticator: XmppAuthenticator!
     open var binder: XmppBinder = XmppDefaultBinder()
     open let delegate = MulticastDelegate<XmppStreamDelegate>()
     
@@ -97,9 +97,12 @@ open class XmppStream {
         }
     }
     
-    open func authenticate(password: String) {
+    // taking XmppAuthenticator here (not in constructor) to allow authenticator type to be decided after connect.
+    // eg. after getting <features>
+    open func authenticate(authenticator: XmppAuthenticator, password: String) {
         assert(state == .connected)
         state = .authenticating
+        self.authenticator = authenticator
         send(element: authenticator.start(jid: jid, password: password))
     }
     
