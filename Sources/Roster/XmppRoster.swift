@@ -42,7 +42,31 @@ open class XmppRoster {
         }
     }
     
-    private func query(block: ((XmlElement)->Void)) {
+    open func unsubscribe(from jid: XmppJID) {
+        denySubscriptionRequest(of: jid)
+    }
+    
+    open func subscribe(to jid: XmppJID) {
+        presence(to: jid, type: .subscribe)
+    }
+    
+    open func approveSubscriptionRequest(of jid: XmppJID) {
+        presence(to: jid, type: .subscribed)
+        
+        // TODO: auto-subscribe option
+    }
+    
+    open func denySubscriptionRequest(of jid: XmppJID) {
+        presence(to: jid, type: .unsubscribed)
+    }
+    
+
+    private func presence(to jid: XmppJID, type: XmppPresenceType) {
+        // TODO: jid.bare should be sent
+        stream.send(element: XmppPresence(type: type, to: jid))
+    }
+    
+    private func query(block: ((XmlElement) ->Void)) {
         let iq = XmppIQ(type: .set, id: idHolder.newId)
         let query = XmlElement(name: "query", xmlns: "jabber:iq:roster")
         let item = XmlElement(name: "item")
@@ -65,7 +89,6 @@ extension XmppRoster: XmppStreamDelegate {
             if awaitingContacts {
                 awaitingContacts = false
                 contacts = query.children.map { XmppContact(item: $0) }
-                print("received all contacts")
                 delegate.invoke {
                     $0.xmppRosterDidFetchContacts(self)
                 }
@@ -90,15 +113,14 @@ extension XmppRoster: XmppStreamDelegate {
             if item["subscription"] == "remove" {
                 // remove from contact list
                 let contact = contacts.remove(at: idx)
-                print("removed contact")
                 delegate.invoke {
                     $0.xmppRoster(self, didRemove: contact)
                 }
             } else {
                 // update
+                // TODO: consider jid.resource ???
                 let contact = XmppContact(item: item)
                 contacts[idx] = contact
-                print("updated contact")
                 delegate.invoke {
                     $0.xmppRoster(self, didUpdate: contact)
                 }
@@ -107,7 +129,6 @@ extension XmppRoster: XmppStreamDelegate {
             // new contact
             let contact = XmppContact(item: item)
             contacts.append(contact)
-            print("added new contact")
             delegate.invoke {
                 $0.xmppRoster(self, didAdd: contact)
             }
@@ -115,17 +136,47 @@ extension XmppRoster: XmppStreamDelegate {
     }
     
     public func stream(_ stream: XmppStream, didReceive presence: XmppPresence) {
+        if presence.type == .subscribe {
+            //TODO: auto-accept for known users
+            delegate.invoke {
+                $0.xmppRoster(self, didReceivePresenceSubsriptionRequestFrom: presence.from!)
+            }
+            return
+        }
 
+        if presence.type == .available || presence.type == .unavailable {
+            if let contact = contacts.first(where: { $0.jid.bare == presence.from!.bare }) {
+                if let (type, resource) = contact.update(with: presence) {
+                    switch type {
+                    case .added:
+                        delegate.invoke {
+                            $0.xmppRoster(self, didAdd: resource, to: contact)
+                        }
+                    case .updated:
+                        delegate.invoke {
+                            $0.xmppRoster(self, didUpdate: resource, for: contact)
+                        }
+                    case .removed:
+                        delegate.invoke {
+                            $0.xmppRoster(self, didRemove: resource, from: contact)
+                        }
+                    }
+                }
+            } else {
+                if stream.jid.bare == presence.from!.bare {
+                    // TODO: update my presence resources
+                    // it's me
+                } else {
+                    // someone unknown? use stream.jid
+                }
+            }
+        } else {
+            // we ignore other types since server will send roster pushes
+        }
     }
     
     public func streamDidAuthenticate(_ stream: XmppStream) {
+        // TODO: add option to opt out of autofetch
         fetchContacts()
     }
-}
-
-public protocol XmppRosterDelegate {
-    func xmppRosterDidFetchContacts(_ roster: XmppRoster)
-    func xmppRoster(_ roster: XmppRoster, didAdd contact: XmppContact)
-    func xmppRoster(_ roster: XmppRoster, didUpdate contact: XmppContact)
-    func xmppRoster(_ roster: XmppRoster, didRemove contact: XmppContact)
 }
