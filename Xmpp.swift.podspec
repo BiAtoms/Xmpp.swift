@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name             = 'Xmpp.swift'
-    s.version          = '1.0.0'
-    s.summary          = 'A tiny xmpp client written in swift.'
+    s.version          = '0.0.1'
+    s.summary          = 'An XMPP Framework written in Swift for Linux, macOS, tvOS and iOS inspired by obj-c library XMPPFramework'
     s.homepage         = 'https://github.com/BiAtoms/Xmpp.swift'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
     s.author           = { 'Orkhan Alikhanov' => 'orkhan.alikhanov@gmail.com' }
